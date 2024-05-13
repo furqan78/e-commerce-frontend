@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductByIdAsync, selectedProductById } from '../productSlice';
 import { useParams } from 'react-router-dom';
 import { addToCartAsync, fetchItemsByUserIdAsync } from '../../cart/CartSlice';
-import { selectLoggedInUser } from '../../auth/authSlice';
+import { selectLoggedInUser } from '../../auth/AuthSlice';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import "../../pamplet/pamplet.scss"
 import { appLevelConstant } from '../../../app/constant';

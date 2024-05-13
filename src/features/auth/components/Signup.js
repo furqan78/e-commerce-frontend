@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate } from 'react-router-dom';
 import { appLevelConstant, regEx } from '../../../app/constant';
-import { createUserAsync, selectLoggedInUser, selectUserError } from '../authSlice';
+import { createUserAsync, selectLoggedInUser, selectUserError } from '../AuthSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 export function Signup() {

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '../features/cart/CartSlice';
 import { useForm } from 'react-hook-form';
 import { appLevelConstant, regEx } from '../app/constant';
-import { selectLoggedInUser } from '../features/auth/authSlice';
+import { selectLoggedInUser } from '../features/auth/AuthSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
 import SavedIcon from "../assets/images/saved_icon.png"
 import { fetchUserInfoAsync, selectUserInfo, updateUserInfoAsync } from '../features/user/userSlice';

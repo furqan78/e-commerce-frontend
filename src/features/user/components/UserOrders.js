@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectLoggedInUser, selectUserError } from '../../auth/authSlice';
+import { selectLoggedInUser, selectUserError } from '../../auth/AuthSlice';
 import { fetchLoggedInUserOrdersAsync, selectUserOrders } from '../userSlice';
 import { getFormatedDate, getItemFromLocalStorage } from '../../../app/constants/common-function';
 import { appLevelConstant } from '../../../app/constant';

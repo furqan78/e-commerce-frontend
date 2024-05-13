@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { checkUser, createUser } from './authAPI';
+import { checkUser, createUser } from './AuthAPI';
 import { setItemInLocalStorage } from '../../app/constants/common-function';
 import { appLevelConstant } from '../../app/constant';
 import { jwtDecode } from 'jwt-decode';
