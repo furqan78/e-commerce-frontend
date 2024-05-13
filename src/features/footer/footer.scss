@@ -1,0 +1,33 @@
+@import '../../app/constants/colors.scss';
+@import '../../style.scss';
+
+.footer-container {
+    height: 25rem;
+    background-color: $nile-blue;
+    margin-top: 4rem;
+    padding: 3rem;
+}
+
+.footer-subcontainer {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+}
+
+h2 {
+    color: $white;
+    font-family: 'Nunito';
+    font-size: 2rem;
+    
+}
+
+.list-lable {
+    color: $disabled-lable;
+    font-family: 'Nunito';
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.list-lable:hover {
+    color: $white;
+}

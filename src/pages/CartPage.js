@@ -4,8 +4,9 @@ import Navbar from "../features/navbar/Navbar";
 export default function CartPage() {
   return (
     <div>
-        <Navbar></Navbar>
+        <Navbar>
         <Cart></Cart>
+        </Navbar>
     </div>
   )
 }

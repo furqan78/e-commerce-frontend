@@ -1,0 +1,22 @@
+@import '../../app/constants/colors.scss';
+
+.order-success-container {
+    width: 40%;
+    padding: 3rem;
+    box-shadow: $light-box-shadow;
+}
+
+.success-image {
+    border-radius: 30rem;
+    box-shadow: $dark-box-shadow;
+}
+
+.check-status-btn {
+    background-color: $success-green;
+}
+
+.user-order-card {
+    padding: 2rem;
+    margin: 1rem;
+    border: 1px solid #ECECEC;
+}

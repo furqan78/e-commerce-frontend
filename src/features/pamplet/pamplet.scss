@@ -1,0 +1,51 @@
+@import '../../app/constants/colors.scss';
+@import '../../style.scss';
+
+.pamplet-container {
+    height: 85vh;
+    background-image: url('../../assets/images/carousel.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 5rem 2rem;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pamplet-title {
+    font-size: 3rem;
+    color: $nigh-rider;
+    font-family: 'Nunito';
+}
+
+.pamplet-desc {
+    font-size: 1rem;
+    color: $nigh-rider;
+    margin-top: 1.5rem;
+    font-family: 'Nunito';
+}
+
+.pamplet-left-section {
+    width: 30%;
+    margin: auto 1rem;
+}
+
+.pamplet-btn {
+    background-color: $nile-blue !important;
+}
+
+.visiting-card-pamplet-container {
+    height: 60vh;
+    padding: 5rem 2rem;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    background-color: $nile-blue;
+}
+
+.visiting-card-pamplet-title {
+    font-size: 3rem;
+    color: $white;   
+    font-weight: bold;
+}
+

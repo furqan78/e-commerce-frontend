@@ -1,0 +1,36 @@
+
+@import "../../app/constants/colors";
+@import "../../style.scss";
+
+.brand-container{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.logo-container {
+    border-radius: 0.5rem;
+    background: $azure-mist;
+    padding: 0.3rem;
+}
+.company-name {
+    color: $midnight-green;
+    font-size: large;
+    font-weight: bolder;
+    font-family: 'Open Sans';
+}
+
+.global-search-bar {
+    background-color: $light-grey;
+    width: 50vw;
+}
+
+
+.search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
+.search-bar-container {
+    position: relative;
+}

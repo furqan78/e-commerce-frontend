@@ -1,0 +1,48 @@
+@import './app/constants/colors.scss';
+
+@font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    src: url('./assets/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    src: url('./assets/fonts/OpenSans-VariableFont_wdth\,wght.ttf') format('truetype');
+  }
+
+.product-categorie-heading {
+    font-size: 1.8rem;
+    color: $categorie-heading;
+    text-align: center;
+    margin-top: 4rem;
+    margin-bottom: 0.5rem;
+    font-weight: 400; 
+    font-family: 'Nunito'; 
+}
+
+.heading-under-line {
+    width: 5rem;
+    border-top-width: 3px;
+    border-top-color: $categorie-heading;
+    align-self: center;
+    text-align: center;
+    margin: auto;
+    opacity: 1;
+}
+
+.product-list-container {
+    display: flex;
+    gap: 2rem;
+    overflow-x: scroll;
+}
+
+.family-open-sans {
+    font-family: 'Open Sans';
+}
+
+.quantitiy-dropdown {
+    border-radius: 0.2rem;
+    // padding: 2rem 0.5rem;
+}

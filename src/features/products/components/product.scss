@@ -1,0 +1,31 @@
+.product-card {
+    width: 12rem;
+}
+
+.product-list-container {
+    scrollbar-width: none;
+}
+
+.product-list-grid-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.product-grid-card {
+    width: 15rem;
+}
+
+.product-img-container {
+    width: 70%;
+}
+
+.product-detail-container {
+    width: 30%;
+}
+
+.product-image {
+    margin: auto;
+    width: 100%;
+    height: 70%;
+}
