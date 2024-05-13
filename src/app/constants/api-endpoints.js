@@ -1,5 +1,5 @@
 export  const  apis = {
-    BASE_URL: 'http://127.0.0.1:8001',
+    BASE_URL: 'https://ecommerce-backend-theta-dusky.vercel.app/',
     API_LOGIN_GET_TOKEN: "/auth/login",
     API_ADD_UPDATE_USER: "/user",
     API_USER_ACCOUNT_CREATION: "/auth",
