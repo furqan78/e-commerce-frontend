@@ -1,7 +1,7 @@
-import { Children, Fragment } from 'react'
+import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, ShoppingBagIcon, XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectItems } from '../cart/CartSlice'
 import './Navbar.scss'
@@ -27,8 +27,8 @@ const navigation = [
     { name: 'Key Chain', href: '/products/' + productCategorie.KEY_CHAIN, current: false },
 ]
 const userNavigation = [
-    { name: 'Profile', link: '#' },
-    { name: 'My Orders', link: '/orders' },
+    { name: 'Profile', link: '/account/details' },
+    { name: 'My Orders', link: '/account/orders' },
     { name: 'Log out', link: '/logout' },
 ]
 
@@ -37,10 +37,9 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ children }) {
-    const dispatch = useDispatch();
     const items = useSelector(selectItems);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    console.log(items, ' fetched itemssssssss')
+    const { register, handleSubmit } = useForm();
+    const navigate = useNavigate();
     return (
         <>
             <div className="min-h-full">
@@ -62,8 +61,10 @@ export default function Navbar({ children }) {
                                         </div>
                                     </div>
                                     <form onSubmit={handleSubmit((data) => {
-                                        dispatch();
-                                        console.log(data, 'forms data--');
+                                        if (data.searchText) {
+                                            navigate("/search", { state: data, replace: true });
+                                            navigate(0)
+                                        }
                                     })}>
                                         <div className='search-bar-container'>
                                             <input
@@ -72,7 +73,7 @@ export default function Navbar({ children }) {
                                                 })}
                                                 type="text"
                                                 placeholder='Find your custom design, t-shirts, cup, key chain'
-                                                className="block rounded-md py-1.5 global-search-bar text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                                className="block rounded-md py-2 global-search-bar text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                                             />
                                             <button
                                                 type="submit"
@@ -159,7 +160,7 @@ export default function Navbar({ children }) {
                                             href={item.href}
                                             className={classNames(
                                                 item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                'block rounded-md px-3 py-2 text-base font-medium'
+                                                'block rounded-md px-3 py-2 text-base font-bold'
                                             )}
                                             aria-current={item.current ? 'page' : undefined}
                                         >
@@ -212,7 +213,7 @@ export default function Navbar({ children }) {
                             <Link
                                 key={item.name}
                                 to={item.href}
-                                className='px-4 py-2 text-sm font-small text-gray-700'
+                                className='px-4 py-2 text-l font-small text-gray-700 font-semibold hover:text-gray-500'
                                 aria-current={item.current ? 'page' : undefined}
                             >
                                 {item.name}

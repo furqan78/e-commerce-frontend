@@ -5,7 +5,7 @@ const ProductPamplet = ({title, description, imageSrc}) => {
         <div className="visiting-card-pamplet-container">
         <div className='pamplet-left-section'>
             <h1 className='visiting-card-pamplet-title'>{title}</h1>
-            <p className='pamplet-desc text-white'>{description}</p>
+            <p className='pamplet-desc text-lg text-white'>{description}</p>
         </div>
         <div className='pamplet-left-section'>
             <img src={imageSrc} alt='' className='' />

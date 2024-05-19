@@ -1,7 +1,7 @@
 import Navbar from "../features/navbar/Navbar";
 import ProductList from "../features/products/components/ProductList";
 
-const ProductListPage = () => {
+export const ProductListPage = () => {
 
     return (
         <div className="bg-white">
@@ -11,5 +11,3 @@ const ProductListPage = () => {
         </div>
     );
 }
-
-export default ProductListPage;

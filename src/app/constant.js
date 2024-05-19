@@ -14,8 +14,11 @@ export const appLevelConstant = {
     PASSWORD_NOT_MATCH: `Password doesn't match`,
     INVALID_CREDENTIAL: 'Invalid credentials',
     REQUIRED: 'Required',
+    MOBILE_NO_NOT_VALID: 'Mobile number not valid',
     CASH_LABLE: 'cash',
     ONLINE_LABLE: 'online',
+    MALE_LABEL: "Male",
+    FEMALE_LABEL: "Female",
     DESIGNS_FOR_YOU_LABLE: 'Designs For You',
     RELATED_PRODUCT_LABLE: 'Related Products',
     BUSINESS_CARDS_LABLE: 'Business Cards',
@@ -34,6 +37,12 @@ export const appLevelConstant = {
     RUPEE_SYMBOL: '&#x20B9;',
     TOKEN_KEY: 'token',
     USER_INFO_KEY: 'userInfo',
+    LOG_OUT_LABLE: "Log Out",
+    LOG_OUT_WARNING: "Are you sure you want to Log out?",
+    YES_LABEL: "Yes",
+    DELETE_LABEL: "Delete",
+    DELETE_ADDRESS_LABEL: "Delete Address",
+    DELETE_ADDRESS_WARNING: "Are you sure you want to delete address? Address will be permanently removed. This action cannot be undone."
 }
 
 export const regEx = {

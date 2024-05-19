@@ -13,13 +13,9 @@
   }
 
 .product-categorie-heading {
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: $categorie-heading;
-    text-align: center;
-    margin-top: 4rem;
-    margin-bottom: 0.5rem;
-    font-weight: 400; 
-    font-family: 'Nunito'; 
+    font-weight: 600;  
 }
 
 .heading-under-line {
@@ -45,4 +41,16 @@
 .quantitiy-dropdown {
     border-radius: 0.2rem;
     // padding: 2rem 0.5rem;
+}
+
+.width-80-percent {
+    width: 80%;
+}
+
+.width-20-percent {
+    width: 20%;
+}
+
+.midnight-green-color {
+    color: $midnight-green;
 }

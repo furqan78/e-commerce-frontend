@@ -30,7 +30,7 @@ export default function OrderSuccessPage() {
                     <p className="text-base text-l font-normal mt-2 w-80 m-auto">We'll send you a shipping confirmation email as soon as your order ships.</p>
                     <div className="mt-10 flex items-center justify-center gap-x-6">
                         <Link
-                            to="/orders"
+                            to="/account/orders"
                             className="px-8 py-2.5 check-status-btn  text-sm font-semibold text-white shadow-sm"
                         >
                             CHECK STATUS

@@ -11,12 +11,14 @@ import { fetchUserInfoAsync, selectUserInfo, updateUserInfoAsync } from '../feat
 import { getItemFromLocalStorage } from '../app/constants/common-function';
 import { updateUser } from '../features/user/userAPI';
 import { ArchiveBoxXMarkIcon, TrashIcon } from '@heroicons/react/24/outline';
+import AppDialog from '../app/common-components/AppDialog';
 
 export default function Checkout() {
     const [open, setOpen] = useState(true)
     const dispatch = useDispatch();
     const items = useSelector(selectItems);
     const [shippingEstimate, setShippingEstimate] = useState(20);
+    const [isDialog, setDialog] = useState(false);
     const [taxEstimate, setTaxEstimate] = useState(10);
     const totalAmount = items.reduce((amount, item) => item.product.price * item.quantity + amount, 0);
     const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -26,19 +28,11 @@ export default function Checkout() {
     let userInfo = JSON.parse(getItemFromLocalStorage(appLevelConstant.USER_INFO_KEY));
     // const userData = useSelector(selectUserInfo);
 
-    const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(appLevelConstant.ONLINE_LABLE);
     const [selectedIndex, setSelectedIndex] = useState(0);
-
-    // const handleQuantity = (e, product) => {
-    //     dispatch(updateCartAsync({ ...product, quantity: +e.target.value }));
-    // }
-
-    // const handleRemoveItems = (e, id) => {
-    //     dispatch(removeItemsFromCartAsync(id));
-    // }
 
     const handleSelectAddress = (e) => {
         setSelectedIndex(e.target.value);
@@ -67,7 +61,12 @@ export default function Checkout() {
         }
     }
 
+    const handleOpenDialog = (index) => {
+        setDialog(true);
+    }
+
     const handleRemoveAddress = (index) => {
+        setDialog(false);
         setSelectedIndex(0);
         let address = userInfo?.address;
         address.splice(index, 1);
@@ -117,7 +116,7 @@ export default function Checkout() {
                                                         {...register('name', { required: appLevelConstant.REQUIRED, })}
                                                         id="name"
                                                         autoComplete="given-name"
-                                                        className="block w-full rounded-md border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block w-full rounded-sm border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     />
                                                     {errors.name ? <p className='text-red-500'>{errors.name.message}</p> : null}
                                                 </div>
@@ -137,7 +136,7 @@ export default function Checkout() {
                                                             maxLength: 10
                                                         })}
                                                         autoComplete="family-name"
-                                                        className="block w-full rounded-md border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block w-full rounded-sm border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     />
                                                     {errors.phone ? <p className='text-red-500'>{errors.phone.message}</p> : null}
                                                 </div>
@@ -159,7 +158,7 @@ export default function Checkout() {
                                                         })}
                                                         type="email"
                                                         autoComplete="email"
-                                                        className="block w-full rounded-md border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block w-full rounded-sm border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     />
                                                     {errors.email ? <p className='text-red-500'>{errors.email.message}</p> : null}
                                                 </div>
@@ -175,7 +174,7 @@ export default function Checkout() {
                                                         id="streetAddress"
                                                         {...register('streetAddress', { required: appLevelConstant.REQUIRED, })}
                                                         autoComplete="streetAddress"
-                                                        className="block w-full rounded-md border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block w-full rounded-sm border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     />
                                                     {errors.streetAddress ? <p className='text-red-500'>{errors.streetAddress.message}</p> : null}
                                                 </div>
@@ -191,7 +190,7 @@ export default function Checkout() {
                                                         id="city"
                                                         {...register('city', { required: appLevelConstant.REQUIRED, })}
                                                         autoComplete="address-level2"
-                                                        className="block w-full rounded-md border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block w-full rounded-sm border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     />
                                                     {errors.city ? <p className='text-red-500'>{errors.city.message}</p> : null}
                                                 </div>
@@ -207,7 +206,7 @@ export default function Checkout() {
                                                         id="state"
                                                         {...register('state', { required: appLevelConstant.REQUIRED, })}
                                                         autoComplete="address-level1"
-                                                        className="block w-full rounded-md border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block w-full rounded-sm border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     />
                                                     {errors.state ? <p className='text-red-500'>{errors.state.message}</p> : null}
                                                 </div>
@@ -224,7 +223,7 @@ export default function Checkout() {
                                                         id="pinCode"
                                                         {...register('pinCode', { required: appLevelConstant.REQUIRED, })}
                                                         autoComplete="pinCode"
-                                                        className="block w-full rounded-md border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block w-full rounded-sm border-gray-400 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     />
                                                     {errors.pinCode ? <p className='text-red-500'>{errors.pinCode.message}</p> : null}
                                                 </div>
@@ -238,7 +237,7 @@ export default function Checkout() {
                                         </button>
                                         <button
                                             type="submit"
-                                            className="rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 family-open-sans pamplet-btn"
+                                            className="rounded-sm px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 family-open-sans pamplet-btn"
                                         >
                                             Save Address
                                         </button>
@@ -276,7 +275,7 @@ export default function Checkout() {
                                                             </p>
                                                         </div>
                                                     </li>
-                                                    <TrashIcon onClick={() => handleRemoveAddress(index)} className='h-5 w-5 mt-4 ml-auto  cursor-pointer text-black-400 hover:text-gray-500'></TrashIcon>
+                                                    <TrashIcon onClick={() => handleOpenDialog(index)} className='h-5 w-5 mt-4 ml-auto  cursor-pointer text-black-400 hover:text-gray-500'></TrashIcon>
                                                 </div>
                                             )) : null}
                                         </ul>
@@ -353,7 +352,7 @@ export default function Checkout() {
                                     <div className="mt-6">
                                         <div
                                             onClick={(e) => handleOrder(e)}
-                                            className="flex family-open-sans cursor-pointer items-center justify-center rounded-md border border-transparent pamplet-btn px-6 py-3 text-base font-medium text-white shadow-sm"
+                                            className="flex family-open-sans cursor-pointer items-center justify-center rounded-sm border border-transparent pamplet-btn px-6 py-3 text-base font-medium text-white shadow-sm"
                                         >
                                             Order Now
                                         </div>
@@ -379,6 +378,13 @@ export default function Checkout() {
                     </div>
                 </div>
             </div>
+            <AppDialog 
+            title={appLevelConstant.DELETE_ADDRESS_LABEL}
+            description={appLevelConstant.DELETE_ADDRESS_WARNING} 
+            toggle={isDialog} 
+            actionButtonLabel={appLevelConstant.DELETE_LABEL}
+            dialogClosed={()=> setDialog(false)} 
+            dialogAction={()=> handleRemoveAddress(selectedIndex)} />
         </>
     )
 }

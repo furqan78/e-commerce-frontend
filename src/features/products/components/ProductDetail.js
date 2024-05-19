@@ -62,11 +62,11 @@ export default function ProductDetail() {
 
   return (
     <>
-      <div className="bg-white px-12">
+      <div className="bg-white">
         {product ? <div className="pt-6">
           {/* Image gallery */}
-          <div className='d-flex gap-8'>
-            <div className="product-img-container hidden overflow-hidden rounded-lg lg:block">
+          <div className='d-flex gap-8 px-12'>
+            <div className="product-img-container hidden overflow-hidden lg:block">
               <img
                 src={product.images[0]}
                 alt={product.title}
@@ -233,8 +233,7 @@ export default function ProductDetail() {
             </div>
           </div>
           <div>
-        <h1 className="product-categorie-heading">{appLevelConstant.RELATED_PRODUCT_LABLE}</h1>
-        <hr className="heading-under-line"></hr>
+        <h1 className="product-categorie-heading mx-14">{appLevelConstant.RELATED_PRODUCT_LABLE}</h1>
         <ProductListSlider categorie={appLevelConstant.RELATED_PRODUCT_LABLE}></ProductListSlider>
       </div>
         </div> : null}

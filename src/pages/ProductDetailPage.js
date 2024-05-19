@@ -1,7 +1,7 @@
 import Navbar from "../features/navbar/Navbar";
 import ProductDetail from "../features/products/components/ProductDetail";
 
-export default function Home() {
+export default function ProductDetailPage() {
   return (
     <div>
         <Navbar>
