@@ -2,10 +2,10 @@ import axios from "axios";
 import { authHeaders } from "../../app/constant";
 import { apis } from "../../app/constants/api-endpoints";
 
-export function fetchLoggedInUserOrders(userId) {
+export function fetchLoggedInUserOrders(reqObj) {
   return new Promise(async (resolve, reject) => {
     axios.get(
-      apis.BASE_URL + apis.API_USER_ORDERS + `/${userId}`,
+      apis.BASE_URL + apis.API_USER_ORDERS + `/${reqObj.user_id}?page=${reqObj.page}`,
       {headers: authHeaders.headers}
     ).then(async (res) => {
       const data = res.data;

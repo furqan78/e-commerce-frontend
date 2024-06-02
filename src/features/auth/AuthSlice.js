@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { checkUser, createUser } from './AuthAPI';
 import { setItemInLocalStorage } from '../../app/constants/common-function';
 import { appLevelConstant } from '../../app/constant';
-import { jwtDecode } from 'jwt-decode';
 
 const initialState = {
   loggedInUser: null,
@@ -20,8 +19,7 @@ export const createUserAsync = createAsyncThunk(
   async (userData) => {
     const response = await createUser(userData);
     // The value we return becomes the `fulfilled` action payload
-    setItemInLocalStorage(appLevelConstant.TOKEN_KEY, response.token);
-    return response.token;
+    return response;
   }
 );
 
@@ -51,6 +49,8 @@ export const counterSlice = createSlice({
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.loggedInUser = action.payload;
+        setItemInLocalStorage(appLevelConstant.TOKEN_KEY, action.payload.token);
+        setItemInLocalStorage(appLevelConstant.USER_INFO_KEY, JSON.stringify(action.payload.userInfo));
       })
       .addCase(createUserAsync.rejected, (state, action) => {
         state.status = 'idle';

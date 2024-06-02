@@ -4,13 +4,14 @@ import { RadioGroup } from '@headlessui/react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductByIdAsync, selectedProductById } from '../productSlice';
 import { useParams } from 'react-router-dom';
-import { addToCartAsync, fetchItemsByUserIdAsync } from '../../cart/CartSlice';
+import { addToCartAsync } from '../../cart/CartSlice';
 import { selectLoggedInUser } from '../../auth/AuthSlice';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import "../../pamplet/pamplet.scss"
 import { appLevelConstant } from '../../../app/constant';
 import ProductListSlider from './ProductListSlider';
 import { getItemFromLocalStorage } from '../../../app/constants/common-function';
+import { BoltIcon } from '@heroicons/react/24/solid';
 
 
 const colors = [
@@ -46,6 +47,7 @@ export default function ProductDetail() {
   const product = useSelector(selectedProductById);
   const params = useParams();
   const userInfo = JSON.parse(getItemFromLocalStorage(appLevelConstant.USER_INFO_KEY));
+  const [productImage, setProductImage] = useState(product?.thumbnail);
 
 
   const dispatch = useDispatch();
@@ -65,13 +67,33 @@ export default function ProductDetail() {
       <div className="bg-white">
         {product ? <div className="pt-6">
           {/* Image gallery */}
-          <div className='d-flex gap-8 px-12'>
-            <div className="product-img-container hidden overflow-hidden lg:block">
+          <div className='d-flex gap-12 px-12'>
+            <div className="hidden overflow-hidden lg:block">
               <img
-                src={product.images[0]}
+                src={productImage ? productImage : product?.thumbnail}
                 alt={product.title}
-                className="product-image object-cover object-center"
+                className="object-cover object-center"
               />
+              <div className='flex mt-2 gap-2'>
+                <div className='cursor-pointer border-gray-200 border-1' onClick={() => setProductImage(product.thumbnail)}>
+                  <img
+                    src={product.thumbnail}
+                    alt='Ali Studio Product'
+                    className="w-16 h-16 object-cover object-center"
+                  />
+                </div >
+                {
+                  product?.images?.map((item) => (
+                    <div className='cursor-pointer border-gray-200 border-1' onClick={() => setProductImage(item)}>
+                      <img
+                        src={item}
+                        alt='Ali Studio Product'
+                        className="w-16 h-16 object-cover object-center"
+                      />
+                    </div>
+                  ))
+                }
+              </div>
             </div>
             {/* Options */}
             <div className="mt-2 product-detail-container lg:row-span-3 lg:mt-0">
@@ -112,7 +134,7 @@ export default function ProductDetail() {
 
                 <div className="mt-3">
                   <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                    {highlights.map((highlight) => (
+                    {product?.highlights?.map((highlight) => (
                       <li key={highlight} className="text-gray-400">
                         <span className="text-gray-600">{highlight}</span>
                       </li>
@@ -162,14 +184,11 @@ export default function ProductDetail() {
                 <div className="mt-10">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                    <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                      Size guide
-                    </a>
                   </div>
 
                   <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
                     <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
-                    <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+                    <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 l:grid-cols-4">
                       {sizes.map((size) => (
                         <RadioGroup.Option
                           key={size.name}
@@ -220,22 +239,33 @@ export default function ProductDetail() {
                   </RadioGroup>
                 </div>
 
-                <button
-                  onClick={(e) => handleCart(e)}
-                  type="submit"
-                  className="mt-10 w-full flex items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium pamplet-btn text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-                >
-                  <ShoppingBagIcon className="h-6 w-6" aria-hidden="true" />
+                <div className='flex gap-4'>
+                  <button
+                    onClick={(e) => handleCart(e)}
+                    type="submit"
+                    className="mt-10 w-full flex items-center justify-center rounded-md midnight-border px-8 py-3 text-base font-medium text-white"
+                  >
+                    <ShoppingBagIcon className="h-6 w-6 midnight-green-color" aria-hidden="true" />
 
-                  <span className='ml-2'>Add to bag</span>
-                </button>
+                    <span className='ml-2 midnight-green-color'>ADD TO BAG</span>
+                  </button>
+                  <button
+                    onClick={(e) => handleCart(e)}
+                    type="submit"
+                    className="mt-10 w-full flex items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium pamplet-btn text-white"
+                  >
+                    <BoltIcon className="h-6 w-6" aria-hidden="true" />
+
+                    <span className='ml-2'>BUY NOW</span>
+                  </button>
+                </div>
               </form>
             </div>
           </div>
-          <div>
-        <h1 className="product-categorie-heading mx-14">{appLevelConstant.RELATED_PRODUCT_LABLE}</h1>
-        <ProductListSlider categorie={appLevelConstant.RELATED_PRODUCT_LABLE}></ProductListSlider>
-      </div>
+          <div className='mt-32'>
+            <h1 className="product-categorie-heading mx-14">{appLevelConstant.RELATED_PRODUCT_LABLE}</h1>
+            <ProductListSlider categorie={appLevelConstant.RELATED_PRODUCT_LABLE}></ProductListSlider>
+          </div>
         </div> : null}
       </div>
     </>

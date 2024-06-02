@@ -1,5 +1,7 @@
+import AdminProtected from "../../features/auth/components/AdminProtected";
 import Logout from "../../features/auth/components/Logout";
 import Protected from "../../features/auth/components/Protected";
+import AdminProductsPage from "../../admin/pages/AdminProductsPage";
 import CartPage from "../../pages/CartPage";
 import Checkout from "../../pages/Checkout";
 import Home from "../../pages/Home";
@@ -10,15 +12,19 @@ import ProductDetailPage from "../../pages/ProductDetailPage";
 import { ProductListPage } from "../../pages/ProductListPage";
 import ProductSearchPage from "../../pages/ProductSearchPage";
 import SignupPage from "../../pages/SignupPage";
-import UserOrdersPage from "../../pages/UserOrdersPage";
+import UserProfilePage from "../../pages/UserProfilePage";
+import AdminAddUpdateProduct from "../../admin/components/AdminAddUpdateProduct";
+import AdminProductList from "../../admin/components/AdminProductList";
+import AdminProductDetail from "../../admin/components/AdminProductDetail";
+import AdminOrders from "../../admin/components/AdminOrders";
 
 export const routes = [
-    
+
   {
     path: "/",
     element: <Protected>
       <Home></Home>
-      </Protected>
+    </Protected>
   },
   {
     path: "/signin",
@@ -36,13 +42,13 @@ export const routes = [
     path: "/cart",
     element: <Protected>
       <CartPage></CartPage>
-      </Protected>
+    </Protected>
   },
   {
     path: "/checkout",
     element: <Protected>
       <Checkout></Checkout>
-      </Protected>
+    </Protected>
   },
   {
     path: "/product-detail/:id",
@@ -63,7 +69,35 @@ export const routes = [
   },
   {
     path: "/account/:action",
-    element: <UserOrdersPage></UserOrdersPage>
+    element: <UserProfilePage></UserProfilePage>
+  },
+  {
+    path: "/admin/product-list",
+    element: <AdminProtected>
+      <AdminProductsPage>
+        <AdminProductList />
+      </AdminProductsPage>
+    </AdminProtected>
+  },
+  {
+    path: "/admin/product-details/:id",
+    element: <AdminProtected>
+      <AdminProductsPage>
+        <AdminProductDetail />
+      </AdminProductsPage>
+    </AdminProtected>
+  },
+  {
+    path: "/admin/product-add-update",
+    element: <AdminProtected>
+      <AdminAddUpdateProduct />
+    </AdminProtected>
+  },
+  {
+    path: "/admin/orders",
+    element: <AdminProtected>
+        <AdminOrders />
+    </AdminProtected>
   },
   {
     path: "*",

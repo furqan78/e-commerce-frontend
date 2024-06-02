@@ -83,6 +83,9 @@ export default function Navbar({ children }) {
                                             </button>
                                         </div>
                                     </form>
+                                    <Link to={'/admin/product-list'} className='px-4 py-2  border border-gray-200 d-flex gap-3 cursor-pointer'>
+                                        <p className="text-sm font-semibold leading-6 midnight-green-color">Go to Admin Panel</p>
+                                    </Link>
                                     <div className="hidden md:block">
                                         <div className="ml-4 flex items-center md:ml-6">
                                             <Link to="/cart">

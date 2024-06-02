@@ -1,21 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate } from 'react-router-dom';
 import { appLevelConstant, regEx } from '../../../app/constant';
 import { createUserAsync, selectLoggedInUser, selectUserError } from '../AuthSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { getItemFromLocalStorage } from '../../../app/constants/common-function';
 
 export function Signup() {
   const dispatch = useDispatch();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  let token = getItemFromLocalStorage(appLevelConstant.TOKEN_KEY);
   const user = useSelector(selectLoggedInUser);
   const userError = useSelector(selectUserError);
 
+  useEffect(()=> {
+    token = getItemFromLocalStorage(appLevelConstant.TOKEN_KEY);
+  },[user])
+
   return (
     <>
-      {user && <Navigate to='/' replace={true}></Navigate>}
+      {token && <Navigate to='/' replace={true}></Navigate>}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        {user?.email}
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
@@ -30,7 +35,6 @@ export function Signup() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form noValidate className="space-y-6" onSubmit={handleSubmit((data) => {
             dispatch(createUserAsync({ email: data.email, password: data.password, addresses: [] }));
-            console.log(data, 'forms data--');
           })}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">

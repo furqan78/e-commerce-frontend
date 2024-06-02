@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { checkUserAsync, selectLoggedInUser, selectUserError } from '../AuthSlice';
 import { appLevelConstant, regEx } from '../../../app/constant';
+import { getItemFromLocalStorage } from '../../../app/constants/common-function';
 
 export function Login() {
   const dispatch = useDispatch();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const token = useSelector(selectLoggedInUser);
+  let token = getItemFromLocalStorage(appLevelConstant.TOKEN_KEY);
+  const user = useSelector(selectLoggedInUser);
   const userError = useSelector(selectUserError);
+
+  useEffect(()=> {
+    token = getItemFromLocalStorage(appLevelConstant.TOKEN_KEY);
+  },[user])
 
   return (
     <>

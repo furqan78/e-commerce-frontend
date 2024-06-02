@@ -1,6 +1,9 @@
 import { getItemFromLocalStorage } from "./constants/common-function";
 
-export const ITEMS_PER_PAGE = 10;
+export const ITEMS_PER_PAGES = {
+    productPage: 10,
+    ordersPage: 5,
+}
 
 export const appLevelConstant = {
     CONFIRM_PASSWORD_REQUIRED: 'Confirm password is required',
@@ -42,7 +45,25 @@ export const appLevelConstant = {
     YES_LABEL: "Yes",
     DELETE_LABEL: "Delete",
     DELETE_ADDRESS_LABEL: "Delete Address",
-    DELETE_ADDRESS_WARNING: "Are you sure you want to delete address? Address will be permanently removed. This action cannot be undone."
+    DELETE_ADDRESS_WARNING: "Are you sure you want to delete address? Address will be permanently removed. This action cannot be undone.",
+    SORT_BY_LABEL: "Sort by",
+    ORDER_STATUS_LABEL: "Order Status",
+    ADMIN_LABEL: "ADMIN",
+    PRICE_NOT_VALID: 'Price not valid',
+    DESCRIPTION_NOT_VALID: "Description not valid",
+    HIGHLIGHT_NOT_VALID: "Highlight not valid",
+    RATING_NOT_VALID: "Rating not valid",
+    PRODUCT_PREVIEW_LABLE: "Product Preview",
+    ADD_PRODUCT_LABLE: "Add Product",
+    UPDATE_PRODUCT_LABLE: "Update Product",
+    ALL_ORDER_STATUS: "All Orders",
+    CONFIRMED_ORDER_STATUS: "Confirmed",
+    SHIPPED_ORDER_STATUS: "Shipped",
+    OUT_FOR_DELIVERY_ORDER_STATUS: "Out for Delivery",
+    DELIVERED_ORDER_STATUS: "Delivered",
+    CANCELLED_ORDER_STATUS: "Cancelled",
+    RETURNED_ORDER_STATUS: "Returned",
+    FAILED_ORDER_STATUS: "Failed",
 }
 
 export const regEx = {
@@ -58,7 +79,7 @@ export const authHeaders = {
     headers: {
         "Content-Type": "application/json",
         "Authorization": getItemFromLocalStorage(appLevelConstant.TOKEN_KEY),
-      }
+    }
 }
 
 export const productsClassification = [
@@ -88,3 +109,26 @@ export const productCategorie = {
     PILLOW: 'pillow-cover n'
 
 }
+
+export const orderStatus = [
+    {
+        label: "All orders",
+        vaule: "all-orders"
+    },
+    {
+        label: "On the way",
+        vaule: "on-the-way"
+    },
+    {
+        label: "Delivered",
+        vaule: "delivered"
+    },
+    {
+        label: "Cancelled",
+        vaule: "cancelled"
+    },
+    {
+        label: "Returned",
+        vaule: "returned"
+    }
+]

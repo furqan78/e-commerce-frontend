@@ -7,7 +7,7 @@ const Pamplet = () => {
     return (
         <div className="pamplet-container">
             <div className='pamplet-left-section'>
-                <h1 className='pamplet-title'>Your Signature Style Starts Here.</h1>
+                <h1 className='pamplet-title'>Your Creative Style Starts Here.</h1>
                 <p className='pamplet-desc'>We provide the custom design clothing for any season.
                     You can choose trendy or classy design according to your preferences.</p>
                     <button

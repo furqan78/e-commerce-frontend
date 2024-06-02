@@ -20,13 +20,16 @@
 }
 
 .product-detail-container {
-    width: 30%;
+    width: 90%;
 }
 
 .product-image {
     margin: auto;
-    width: 100%;
     height: 70%;
+}
+
+.product-preview-container {
+    height: 60vh;
 }
 
 .left-scroll-indicator-btn {

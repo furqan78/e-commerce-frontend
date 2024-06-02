@@ -6,5 +6,6 @@ export  const  apis = {
     API_USER_CART_DETAIL: "/cart",
     API_USER_CART_RESET: "/cart-reset/",
     API_FETCH_ALL_PRODUCTS: "/product",
+    API_ADMIN_PRODUCT: "/admin-product",
     API_USER_ORDERS: "/order"
 }

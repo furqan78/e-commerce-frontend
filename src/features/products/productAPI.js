@@ -19,6 +19,32 @@ export function fetchAllProducts(reqObj) {
   });
 }
 
+export function addProduct(reqObj) {
+  return new Promise(async (resolve, reject) => {
+    axios.post(
+      apis.BASE_URL + apis.API_ADMIN_PRODUCT,
+      JSON.stringify(reqObj),
+      {headers: authHeaders.headers},
+    ).then((res) => {
+      const data = res.data.data;
+      resolve({ data });
+    }).catch((error) => {
+      reject([]);
+    });
+  });
+}
+
+export function updateProduct(reqObj,productId) {
+  return axios.put(
+      apis.BASE_URL + apis.API_ADMIN_PRODUCT + `/${productId}`,
+      JSON.stringify(reqObj),
+      {headers: authHeaders.headers},
+    ).then((res) => res.data.data)
+    .catch((error) => {
+      throw error;
+    });
+}
+
 export function fetchProductById(id) {
   return new Promise(async (resolve, reject) => {
     axios({
@@ -32,6 +58,18 @@ export function fetchProductById(id) {
       reject([]);
     });
   });
+}
+
+export function getProductById(id) {
+  return axios({
+      url: apis.BASE_URL + apis.API_FETCH_ALL_PRODUCTS + `/${id}`,
+      method: "GET",
+      headers: authHeaders.headers,
+    })
+    .then(res => res.data.data)
+    .catch(error => {
+      throw error;
+    });
 }
 
 export function fetchAllBrands() {
