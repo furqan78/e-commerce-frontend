@@ -33,11 +33,11 @@ function AdminProductsPage({children}) {
           </button>
         </div>
       </form>
-      <Link to={'/admin/product-add-update'} className='px-4 py-2  border border-gray-200 d-flex gap-3 cursor-pointer'>
+      <Link to={'/admin/product-add-update'} className='px-4 py-2  border border-gray-200 flex gap-3 cursor-pointer'>
         <PlusIcon className='w-6 h-6 midnight-green-color' />
         <p className="text-sm font-semibold leading-6 midnight-green-color">ADD A NEW PRODUCT</p>
       </Link>
-      <Link to={'/admin/orders'} className='px-4 py-2  border border-gray-200 d-flex gap-3 cursor-pointer'>
+      <Link to={'/admin/orders'} className='px-4 py-2  border border-gray-200 flex gap-3 cursor-pointer'>
         <p className="text-sm font-semibold leading-6 midnight-green-color">ORDERS</p>
       </Link>
     </div>

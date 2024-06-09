@@ -67,9 +67,9 @@ export default function UserProfilePage() {
       <Navbar>
         <div className="mx-16 mt-10">
               <h2 className="text-gray-900 text-2xl font-bold">My Account</h2>
-          <div className="d-flex my-4">
+          <div className="flex my-4">
             <div className="width-20-percent">
-              <div className="d-flex px-3 py-2.5 items-center gap-3 bg-gray-100 my-4">
+              <div className="flex px-3 py-2.5 items-center gap-3 bg-gray-100 my-4">
                 <img className="h-12 w-12 rounded-full" src={imageUrl} alt="" />
                 <div>
                   <p className="text-sm text-gray-700">Hello,</p>

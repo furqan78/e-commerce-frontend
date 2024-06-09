@@ -19,12 +19,29 @@ export function fetchAllProducts(reqObj) {
   });
 }
 
+// A mock function to mimic making an async request for data
+export function getAllProducts(reqObj) {
+  const query = `?page=${reqObj.page}&limit=12${reqObj?.search ? "&search=" + reqObj?.search : ""}`
+  return axios.get(
+    apis.BASE_URL + apis.API_FETCH_ALL_PRODUCTS + query,
+    { headers: authHeaders.headers },
+  ).then((res) => res.data.data)
+    .catch((error) => {
+      if (axios.isCancel(error)) {
+        console.log('Request canceled', error.message);
+        throw new Error('Request canceled');
+      } else {
+        throw error;
+      }
+    });
+}
+
 export function addProduct(reqObj) {
   return new Promise(async (resolve, reject) => {
     axios.post(
       apis.BASE_URL + apis.API_ADMIN_PRODUCT,
       JSON.stringify(reqObj),
-      {headers: authHeaders.headers},
+      { headers: authHeaders.headers },
     ).then((res) => {
       const data = res.data.data;
       resolve({ data });
@@ -34,12 +51,12 @@ export function addProduct(reqObj) {
   });
 }
 
-export function updateProduct(reqObj,productId) {
+export function updateProduct(reqObj, productId) {
   return axios.put(
-      apis.BASE_URL + apis.API_ADMIN_PRODUCT + `/${productId}`,
-      JSON.stringify(reqObj),
-      {headers: authHeaders.headers},
-    ).then((res) => res.data.data)
+    apis.BASE_URL + apis.API_ADMIN_PRODUCT + `/${productId}`,
+    JSON.stringify(reqObj),
+    { headers: authHeaders.headers },
+  ).then((res) => res.data.data)
     .catch((error) => {
       throw error;
     });
@@ -62,10 +79,10 @@ export function fetchProductById(id) {
 
 export function getProductById(id) {
   return axios({
-      url: apis.BASE_URL + apis.API_FETCH_ALL_PRODUCTS + `/${id}`,
-      method: "GET",
-      headers: authHeaders.headers,
-    })
+    url: apis.BASE_URL + apis.API_FETCH_ALL_PRODUCTS + `/${id}`,
+    method: "GET",
+    headers: authHeaders.headers,
+  })
     .then(res => res.data.data)
     .catch(error => {
       throw error;

@@ -1,7 +1,7 @@
 import { getItemFromLocalStorage } from "./constants/common-function";
 
 export const ITEMS_PER_PAGES = {
-    productPage: 10,
+    productPage: 12,
     ordersPage: 5,
 }
 

@@ -2,16 +2,17 @@ import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid';
 import { RadioGroup } from '@headlessui/react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProductByIdAsync, selectedProductById } from '../productSlice';
 import { useParams } from 'react-router-dom';
 import { addToCartAsync } from '../../cart/CartSlice';
 import { selectLoggedInUser } from '../../auth/AuthSlice';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import "../../pamplet/pamplet.scss"
 import { appLevelConstant } from '../../../app/constant';
-import ProductListSlider from './ProductListSlider';
 import { getItemFromLocalStorage } from '../../../app/constants/common-function';
 import { BoltIcon } from '@heroicons/react/24/solid';
+import { getProductById } from '../productAPI';
+import { ProductSkeleton } from '../../../app/common-components/ProductSkeleton';
+import BestDesigns from './BestDesigns';
 
 
 const colors = [
@@ -44,7 +45,9 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(colors[0])
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   const user = useSelector(selectLoggedInUser)
-  const product = useSelector(selectedProductById);
+  const [product, setProduct] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const params = useParams();
   const userInfo = JSON.parse(getItemFromLocalStorage(appLevelConstant.USER_INFO_KEY));
   const [productImage, setProductImage] = useState(product?.thumbnail);
@@ -53,8 +56,26 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProductByIdAsync(params.id));
-  }, [dispatch, params.id])
+    let isMounted = true;
+
+        getProductById(params.id)
+        .then(data => {
+            if(isMounted) {
+                setProduct(data);
+                setLoading(false);
+            }
+        })
+        .catch(err => {
+            if(isMounted) {
+                setError(err.message);
+                setLoading(false);
+            }
+        });
+
+        return () => {
+            isMounted = false;
+        }
+  }, [params.id])
 
   const handleCart = (e) => {
     e.preventDefault();
@@ -64,11 +85,13 @@ export default function ProductDetail() {
 
   return (
     <>
+    { loading ? <ProductSkeleton /> :
+
       <div className="bg-white">
         {product ? <div className="pt-6">
           {/* Image gallery */}
-          <div className='d-flex gap-12 px-12'>
-            <div className="hidden overflow-hidden lg:block">
+          <div className='flex gap-12 px-12'>
+            <div className="hidden overflow-hidden lg:block min-h-96">
               <img
                 src={productImage ? productImage : product?.thumbnail}
                 alt={product.title}
@@ -263,11 +286,11 @@ export default function ProductDetail() {
             </div>
           </div>
           <div className='mt-32'>
-            <h1 className="product-categorie-heading mx-14">{appLevelConstant.RELATED_PRODUCT_LABLE}</h1>
-            <ProductListSlider categorie={appLevelConstant.RELATED_PRODUCT_LABLE}></ProductListSlider>
+            <BestDesigns heading={appLevelConstant.RELATED_PRODUCT_LABLE}></BestDesigns>
           </div>
         </div> : null}
       </div>
+}
     </>
   )
 }

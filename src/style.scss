@@ -13,9 +13,10 @@
   }
 
 .product-categorie-heading {
-    font-size: 2rem;
+    font-size: 1.3rem;
     color: $categorie-heading;
-    font-weight: 600;  
+    font-weight: 600;
+    font-family: "Open Sans";
 }
 
 .heading-under-line {
@@ -60,4 +61,18 @@
 
 .midnight-border {
     border: 1px solid $midnight-green;
+}
+
+.semibold-nunito {
+    font-family: "Nunito";
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.nunito-text {
+    font-family: "Nunito";
+}
+
+.open-sans-text {
+    font-family: "Open Sans";
 }

@@ -3,11 +3,16 @@ import { ITEMS_PER_PAGES, appLevelConstant } from '../../app/constant';
 import { createCancelToken, getFormatedDate } from '../../app/constants/common-function';
 import Pagination from '../../app/common-components/Pagination';
 import { fetchAllOrders } from '../../features/order/orderAPI';
+import OrderSkeletonLoader from '../../app/common-components/OrderSkeletonLoader';
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
 export default function AdminOrders() {
 
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [page, setPage] = useState(1);
   const [orderStatus, setOrderStatus] = useState([]);
@@ -79,6 +84,8 @@ export default function AdminOrders() {
   }, [page, selectedStatus]);
 
   const handleStatusChanged = (item) => {
+    setLoading(true);
+    setOrders([]);
     setSelectedStatus(item.label);
   }
 
@@ -88,13 +95,18 @@ export default function AdminOrders() {
         {orderStatus?.map((item, index) => (
           <div onClick={() => handleStatusChanged(item)}
           key={index}
-            className='px-4 py-2 text-l font-small text-gray-700 font-semibold hover:text-gray-500 cursor-pointer'
+            className={classNames(
+              item.label === selectedStatus ? 'border-b-2 border-gray-700' : '',
+              'px-4 py-2 text-l font-small text-gray-700 font-semibold hover:text-gray-500 cursor-pointer'
+            )}
             aria-current={item ? 'page' : undefined}
           >
             {item.label} {`(${item.count})`}
           </div>
         ))}
       </div>
+      { loading ? <OrderSkeletonLoader count={4} /> :
+      <>
       {orders && orders?.data && orders?.data?.length > 0 ?
         <>
           <div>
@@ -151,6 +163,7 @@ export default function AdminOrders() {
             )) : null}
           </div>
         </> : null}
+        </>}
     </div>
   )
 }

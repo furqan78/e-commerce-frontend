@@ -48,7 +48,7 @@ function ProductPreviewDialog({ title, data, toggle, dialogClosed, dialogAction,
                       <div className="mt-2">
                         {data ? <div className="pt-6">
                           {/* Image gallery */}
-                          <div className='d-flex gap-8 px-12 product-preview-container overflow-y-auto'>
+                          <div className='flex gap-8 px-12 product-preview-container overflow-y-auto'>
                             <div className="hidden overflow-hidden lg:block">
                               <img
                                 src={productImage}

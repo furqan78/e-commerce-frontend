@@ -24,19 +24,27 @@ export const decodeJwtToken = (token) => {
 }
 
 export const getImageLink = (imageId) => {
- return `https://drive.google.com/thumbnail?id=${imageId}&sz=w1000`;
+    return `https://drive.google.com/thumbnail?id=${imageId}&sz=w1000`;
 }
 
 export const getImageIdFromURL = (url) => {
     const id = url?.match(/id=([^&]+)/);
     if (id && id[1]) {
         return id[1];
-      } else {
+    } else {
         return "ID not found";
-      }
+    }
 }
 
 export const createCancelToken = () => {
     const source = axios.CancelToken.source();
     return source;
-  };
+};
+
+export const truncateString = (str) => {
+    if (str.length > 20) {
+        return str.slice(0, 20) + '...';
+    } else {
+        return str;
+    }
+}

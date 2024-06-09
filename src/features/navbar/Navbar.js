@@ -7,8 +7,9 @@ import { selectItems } from '../cart/CartSlice'
 import './Navbar.scss'
 import companyLogo from '../../assets/images/company-logo.png';
 import { useForm } from 'react-hook-form'
-import { productCategorie } from '../../app/constant'
+import { appLevelConstant, productCategorie } from '../../app/constant'
 import Footer from '../footer/Footer'
+import { decodeJwtToken, getItemFromLocalStorage } from '../../app/constants/common-function'
 
 const user = {
     name: 'Tom Cook',
@@ -16,16 +17,6 @@ const user = {
     imageUrl:
         'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
-const navigation = [
-    { name: 'Home', href: '/', current: true },
-    { name: 'New Arrivals', href: '/products/' + productCategorie.NEW_ARRIVALS, current: true },
-    { name: 'T-shirts', href: '/products/' + productCategorie.T_SHIRTS, current: false },
-    { name: 'Business Cards', href: '/products/' + productCategorie.BUSINESS_CARDS, current: false },
-    { name: 'Coffee mug', href: '/products/' + productCategorie.COFFEE_MUG, current: false },
-    { name: 'Custom cap', href: '/products/' + productCategorie.CUSTOM_CAP, current: false },
-    { name: 'Pillow Cover', href: '/products/' + productCategorie.PILLOW, current: false },
-    { name: 'Key Chain', href: '/products/' + productCategorie.KEY_CHAIN, current: false },
-]
 const userNavigation = [
     { name: 'Profile', link: '/account/details' },
     { name: 'My Orders', link: '/account/orders' },
@@ -40,13 +31,15 @@ export default function Navbar({ children }) {
     const items = useSelector(selectItems);
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
+    const token = getItemFromLocalStorage(appLevelConstant.TOKEN_KEY);
+    const userRole = decodeJwtToken(token);
     return (
         <>
-            <div className="min-h-full">
+            <div className="min-h-full bg-gray-100">
                 <Disclosure as="nav" className="bg-white">
                     {({ open }) => (
                         <>
-                            <div className="mx-auto px-4 sm:px-6 lg:px-8 py-1 ">
+                            <div className="mx-auto px-4 sm:px-6 lg:px-8 py-1">
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
                                         <div className="flex-shrink-0 brand-container">
@@ -73,7 +66,7 @@ export default function Navbar({ children }) {
                                                 })}
                                                 type="text"
                                                 placeholder='Find your custom design, t-shirts, cup, key chain'
-                                                className="block rounded-md py-2 global-search-bar text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                                className="rounded-md py-2 global-search-bar text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
                                             />
                                             <button
                                                 type="submit"
@@ -83,30 +76,35 @@ export default function Navbar({ children }) {
                                             </button>
                                         </div>
                                     </form>
-                                    <Link to={'/admin/product-list'} className='px-4 py-2  border border-gray-200 d-flex gap-3 cursor-pointer'>
+                                    {/* { userRole?.role && userRole?.role === appLevelConstant.ADMIN_LABEL ?
+                                    <Link to={'/admin/product-list'} className='px-4 py-2  border border-gray-200 flex gap-3 cursor-pointer'>
                                         <p className="text-sm font-semibold leading-6 midnight-green-color">Go to Admin Panel</p>
-                                    </Link>
+                                    </Link> : null} */}
                                     <div className="hidden md:block">
-                                        <div className="ml-4 flex items-center md:ml-6">
+                                        <div className="ml-4 flex gap-4 items-center md:ml-6">
                                             <Link to="/cart">
                                                 <button
                                                     type="button"
-                                                    className="relative p-1 text-black focus:outline-none"
+                                                    className="relative flex items-center gap-2 p-1 text-black focus:outline-none"
                                                 >
+                                                    <div>
                                                     <ShoppingBagIcon className="h-6 w-6" aria-hidden="true" />
+                                                    </div>
+                                                    <div className='semibold-nunito'>Cart</div>
                                                 </button>
                                             </Link>
                                             {items?.length > 0 && <span className="inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
                                                 {items?.length}
                                             </span>}
 
-                                            {/* Profile dropdown */}
-                                            <Menu as="div" className="relative ml-3">
+                                             {/* Profile dropdown */}
+                                             <Menu as="div" className="relative ml-3">
                                                 <div>
-                                                    <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                                    <Menu.Button className="relative py-1 px-2 flex gap-2 max-w-xs items-center rounded-sm text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
                                                         <span className="absolute -inset-1.5" />
                                                         <span className="sr-only">Open user menu</span>
                                                         <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                                                        <p className='semibold-nunito'>{user.name}</p>
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition
@@ -137,6 +135,7 @@ export default function Navbar({ children }) {
                                                     </Menu.Items>
                                                 </Transition>
                                             </Menu>
+
                                         </div>
                                     </div>
                                     <div className="-mr-2 flex md:hidden">
@@ -155,22 +154,6 @@ export default function Navbar({ children }) {
                             </div>
 
                             <Disclosure.Panel className="md:hidden">
-                                <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                                    {navigation.map((item) => (
-                                        <Disclosure.Button
-                                            key={item.name}
-                                            as="a"
-                                            href={item.href}
-                                            className={classNames(
-                                                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                'block rounded-md px-3 py-2 text-base font-bold'
-                                            )}
-                                            aria-current={item.current ? 'page' : undefined}
-                                        >
-                                            {item.name}
-                                        </Disclosure.Button>
-                                    ))}
-                                </div>
                                 <div className="border-t border-gray-700 pb-3 pt-4">
                                     <div className="flex items-center px-5">
                                         <div className="flex-shrink-0">
@@ -209,23 +192,8 @@ export default function Navbar({ children }) {
                         </>
                     )}
                 </Disclosure>
-
-                <header className="bg-white">
-                    <div className="mx-auto px-4 py-3 sm:px-6 lg:px-8">
-                        {navigation.map((item) => (
-                            <Link
-                                key={item.name}
-                                to={item.href}
-                                className='px-4 py-2 text-l font-small text-gray-700 font-semibold hover:text-gray-500'
-                                aria-current={item.current ? 'page' : undefined}
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
-                    </div>
-                </header>
-                <main className='bg-white'>
-                    <div>{children}</div>
+                <main>
+                    <div className='bg-gray-100 mx-3'>{children}</div>
                     <Footer></Footer>
                 </main>
             </div>

@@ -209,7 +209,7 @@ function ManageAddress() {
                             </div>
                         </div>
                     </form> :
-                    <div className='px-4 py-3  border border-gray-200 d-flex gap-3 cursor-pointer'
+                    <div className='px-4 py-3  border border-gray-200 flex gap-3 cursor-pointer'
                         onClick={() => setAddressForm(true)}
                     >
                         <PlusIcon className='w-6 h-6 midnight-green-color' />

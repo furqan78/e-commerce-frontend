@@ -1,27 +1,53 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectAllProducts, fetchAllProductsAsync, selectTotalItems } from '../../features/products/productSlice';
 import { ITEMS_PER_PAGES } from '../../app/constant';
 import '../../features/products/components/product.scss';
 import Pagination from '../../app/common-components/Pagination';
+import { createCancelToken } from '../../app/constants/common-function';
+import { getAllProducts } from '../../features/products/productAPI';
+import SkeletonLoader from '../../app/common-components/SkeletonLoader';
 
 export default function AdminProductList() {
-  const dispatch = useDispatch();
-  const products = useSelector(selectAllProducts);
-  const totalItems = useSelector(selectTotalItems);
   const [page, setPage] = useState(1);
+  const [products, setProducts] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const pagination = { page: page};
-    dispatch(fetchAllProductsAsync(pagination));
-  }, [dispatch, page]);
+    let isMounted = true;
+    const cancelTokenSource = createCancelToken();
+
+    if (isMounted) {
+      const getProducts = async () => {
+        try {
+          const pagination = { page: page };
+          const data = await getAllProducts(pagination);
+          setTotalItems(data.totalCount);
+          setProducts(data);
+          setLoading(false);
+        } catch (err) {
+          if (err.message !== 'Request canceled' && isMounted) {
+            setError(err.message);
+            setLoading(false);
+          }
+        }
+      }
+
+      getProducts();
+    }
+    return () => {
+      isMounted = false;
+      cancelTokenSource.cancel("Requests Canceled.")
+    }
+  }, [page]);
 
   useEffect(() => {
     setPage(1);
   }, [totalItems]);
 
   const handlePagination = (page) => {
+    setLoading(true);
     setPage(page);
   }
 
@@ -30,16 +56,24 @@ export default function AdminProductList() {
 
       <div className="bg-white">
         <div>
-          <main className="mx-auto p-10 sm:px-6 lg:px-8">
-            <section aria-labelledby="products-heading" className="pb-10 pt-6">
-              <div className="">
-                {/* Product grid */}
-                <ProductGrid products={products} />
+          {loading ?
+            (
+              <div className="m-16 py-0 sm:px-6 sm:py-0 lg:px-8">
+                <SkeletonLoader count={ITEMS_PER_PAGES.productPage} />
               </div>
-            </section>
-            {/* section of prodcuts and filters ends */}
-            <Pagination  page={page} handlePagination={handlePagination} totalItems={totalItems} itemsPerPage={ITEMS_PER_PAGES.productPage} />
-          </main>
+            ) : (
+              <main className="mx-auto p-10 sm:px-6 lg:px-8">
+                <section aria-labelledby="products-heading" className="pb-10 pt-6">
+                  <div className="">
+                    {/* Product grid */}
+                    <ProductGrid products={products} />
+                  </div>
+                </section>
+                {/* section of prodcuts and filters ends */}
+                <Pagination page={page} handlePagination={handlePagination} totalItems={totalItems} itemsPerPage={ITEMS_PER_PAGES.productPage} />
+              </main>
+            )
+          }
         </div>
       </div>
     </div>

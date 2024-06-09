@@ -53,7 +53,7 @@ export default function AdminProductDetail() {
         <div className="bg-white py-12">
             {product ? <div className="pt-6">
                 {/* Image gallery */}
-                <div className='d-flex gap-12 px-12'>
+                <div className='flex gap-12 px-12'>
                     <div className="hidden overflow-hidden lg:block">
                         <img
                             src={productImage ? productImage : product?.thumbnail}

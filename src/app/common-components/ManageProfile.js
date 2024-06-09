@@ -48,7 +48,7 @@ function ManageProfile() {
             })}>
                 <div className="space-y-12">
                     <div className=" pb-12">
-                        <div className='d-flex gap-4'>
+                        <div className='flex gap-4'>
                             <h2 className="text-lg font-semibold leading-7 text-gray-900">Personal Information</h2>
                             {
                                 isPersonalInfoEdit ?
@@ -93,7 +93,7 @@ function ManageProfile() {
                                 <div className="mt-4 space-y-10">
                                     <fieldset>
                                         <legend className="text-sm font-medium leading-6 text-gray-900">Your Gender</legend>
-                                        <div className="mt-6 d-flex items-center justify-start gap-5">
+                                        <div className="mt-6 flex items-center justify-start gap-5">
                                             <div className="flex items-center gap-x-3">
                                                 <input
                                                     id="card"
@@ -152,7 +152,7 @@ function ManageProfile() {
             })}>
                 <div className="space-y-12">
                     <div className=" pb-12">
-                        <div className='d-flex gap-4'>
+                        <div className='flex gap-4'>
                             <h2 className="text-lg font-semibold leading-7 text-gray-900">Email Address</h2>
                             {
                                 isEmailEdit ?
@@ -218,7 +218,7 @@ function ManageProfile() {
             })}>
                 <div className="space-y-12">
                     <div className=" pb-12">
-                        <div className='d-flex gap-4'>
+                        <div className='flex gap-4'>
                             <h2 className="text-lg font-semibold leading-7 text-gray-900">Mobile Number</h2>
                             {
                                 isMobileEdit ?
