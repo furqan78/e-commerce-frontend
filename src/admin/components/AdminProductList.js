@@ -91,7 +91,7 @@ function ProductGrid({ products }) {
                 <div key={product.id} className="group relative product-card">
                   <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 group-hover:opacity-75 xl:aspect-h-8 xl:aspect-w-7">
                     <img
-                      src={product.thumbnail}
+                      src={product?.colors ? product?.colors[0].images[0] : ""}
                       className="h-full w-full object-cover object-center group-hover:opacity-75" alt=""
                     />
                   </div>

@@ -22,20 +22,19 @@ export const appLevelConstant = {
     ONLINE_LABLE: 'online',
     MALE_LABEL: "Male",
     FEMALE_LABEL: "Female",
-    DESIGNS_FOR_YOU_LABLE: 'Designs For You',
-    RELATED_PRODUCT_LABLE: 'Related Products',
-    BUSINESS_CARDS_LABLE: 'Business Cards',
+    BEST_PRODUCT_FOR_YOU_LABLE: 'Best Products For You',
+    TSHIRTS_CAPS_MUG_AND_MORE_LABLE: 'T-shirts, Caps, Mugs & more',
+    GRAB_YOUR_FAVOURITE_COFFE_MUG_LABLE: 'Grab Your Favourite Coffee Mug',
+    BUSINES_CARDS_FOR_YOU_LABLE: 'Business Cards For You',
+    CUSTOMIZE_PILLOW_LABLE: 'Customized Pillow & Key Chain',
+    SIMILAR_PRODUCT_LABLE: 'Similar products',
+    YOU_MIGHT_BE_INTERESTED_IN_LABLE: 'You might be interested in',
     BUSINESS_CARDS_DESCRIPION: 'Check out these on-trend and high quality Business Cards templates for you Business',
     NEW_ARRIVALS_LABLE: 'New Arrivals',
     NEW_ARRIVALS_DESCRIPTION: 'Elevate your style and brand with our customizable products. Create standout designs that reflect your unique personality or promote your business with flair.',
-    T_SHIRTS_LABLE: 'T-Shirts',
     T_SHIRTS_DESCRIPTION: '',
-    COFFEE_MUG_LABLE: 'Coffee Mug',
     COFFEE_MUG_DESCRIPTION: '',
-    CUSTOM_CAP_LABLE: 'Custom Cap',
-    PILLOW_COVER_LABLE: 'Pillow Cover',
     PILLOW_DESCRIPTION: '',
-    KEY_CHAIN_LABLE: 'Key Chain',
     KEY_CHAIN_DESCRIPTION: '',
     RUPEE_SYMBOL: '&#x20B9;',
     TOKEN_KEY: 'token',
@@ -50,6 +49,7 @@ export const appLevelConstant = {
     ORDER_STATUS_LABEL: "Order Status",
     ADMIN_LABEL: "ADMIN",
     PRICE_NOT_VALID: 'Price not valid',
+    DISCOUNT_SHOULD_BE_BETWEEN: 'Discount should be between 1% to 80%',
     DESCRIPTION_NOT_VALID: "Description not valid",
     HIGHLIGHT_NOT_VALID: "Highlight not valid",
     RATING_NOT_VALID: "Rating not valid",
@@ -64,6 +64,21 @@ export const appLevelConstant = {
     CANCELLED_ORDER_STATUS: "Cancelled",
     RETURNED_ORDER_STATUS: "Returned",
     FAILED_ORDER_STATUS: "Failed",
+
+    // Product Categorie
+    T_SHIRTS_VALUE: "t-shirts",
+    T_SHIRTS_LABLE: "T-Shirts",
+    BUSINESS_CARDS_VALUE: "business-cards",
+    BUSINESS_CARDS_LABLE: "Business Cards",
+    COFFEE_MUG_VALUE: "coffee-mug",
+    COFFEE_MUG_LABLE: "Coffee Mug",
+    CUSTOM_CAP_VALUE: "caps",
+    CUSTOM_CAP_LABLE: "Caps",
+    PILLOW_COVER_VALUE: "pillow",
+    PILLOW_COVER_LABLE: "Pillow",
+    KEY_CHAIN_VALUE: "key-chain",
+    KEY_CHAIN_LABLE: "Key Chain"
+
 }
 
 export const regEx = {
@@ -131,4 +146,49 @@ export const orderStatus = [
         label: "Returned",
         vaule: "returned"
     }
+]
+
+export const categorieNavigation = [
+    { 
+        name: 'T-shirts', 
+        href: '/product-filter', 
+        current: false, 
+        image: "1k2OZE-QH-a4SuANQ5mCv-54rtUxj_ikx",
+        alt: ""
+    },
+    { 
+        name: 'Business Cards', 
+        href: '/product-filter', 
+        current: false,
+        image: "1RfFIllwwxFDEk8X7gqTAS0vpsHPSY9AP",
+        alt: ""
+    },
+    { 
+        name: 'Coffee mug', 
+        href: '/product-filter', 
+        current: false,
+        image: "1AlDc6J8oNo-tRwW09V9N6tNyAcxgbuOh",
+        alt: ""
+    },
+    { 
+        name: 'Custom cap', 
+        href: '/product-filter', 
+        current: false,
+        image: "1DPTgVvff-jo_lN01zh_7KdkytdLsurv7",
+        alt: ""
+    },
+    { 
+        name: 'Custom pillow', 
+        href: '/product-filter', 
+        current: false,
+        image: "1_0tObkcmprClnakO5woHWR-9MqfIkQBk",
+        alt: "" 
+    },
+    { 
+        name: 'Key Chain', 
+        href: '/product-filter', 
+        current: false,
+        image: "1FhYdRxCq1ZtqVFOViK7a7XUtzCkDQo6l",
+        alt: ""
+    },
 ]

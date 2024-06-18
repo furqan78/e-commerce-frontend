@@ -51,12 +51,24 @@
     width: 60%;
 }
 
+.width-69-percent {
+    width: 69%;
+}
+
+.width-30-percent {
+    width: 30%;
+}
+
 .width-20-percent {
     width: 20%;
 }
 
 .midnight-green-color {
     color: $midnight-green;
+}
+
+.bg-midnight-green {
+    background-color: $midnight-green;
 }
 
 .midnight-border {
@@ -75,4 +87,12 @@
 
 .open-sans-text {
     font-family: "Open Sans";
+}
+
+.border-width {
+    border-width: 1px;
+}
+
+.bg-nile-blue {
+    background-color: $nile-blue !important;
 }

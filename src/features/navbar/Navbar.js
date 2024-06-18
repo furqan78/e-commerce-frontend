@@ -2,17 +2,17 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, ShoppingBagIcon, XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { selectItems } from '../cart/CartSlice'
 import './Navbar.scss'
 import companyLogo from '../../assets/images/company-logo.png';
 import { useForm } from 'react-hook-form'
-import { appLevelConstant, productCategorie } from '../../app/constant'
+import { appLevelConstant, categorieNavigation } from '../../app/constant'
 import Footer from '../footer/Footer'
 import { decodeJwtToken, getItemFromLocalStorage } from '../../app/constants/common-function'
 
 const user = {
-    name: 'Tom Cook',
+    name: 'User',
     email: 'tom@example.com',
     imageUrl:
         'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -27,7 +27,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar({ children }) {
+export default function Navbar({ children, isCategorieSection = false }) {
     const items = useSelector(selectItems);
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
@@ -36,11 +36,11 @@ export default function Navbar({ children }) {
     return (
         <>
             <div className="min-h-full bg-gray-100">
-                <Disclosure as="nav" className="bg-white">
+                <Disclosure as="nav" className="bg-white border-width border-gray-200">
                     {({ open }) => (
                         <>
                             <div className="mx-auto px-4 sm:px-6 lg:px-8 py-1">
-                                <div className="flex h-16 items-center justify-between">
+                                <div className="flex h-14 items-center justify-between">
                                     <div className="flex items-center">
                                         <div className="flex-shrink-0 brand-container">
                                             <div className='logo-container'>
@@ -55,7 +55,7 @@ export default function Navbar({ children }) {
                                     </div>
                                     <form onSubmit={handleSubmit((data) => {
                                         if (data.searchText) {
-                                            navigate("/search", { state: data, replace: true });
+                                            navigate("/product-filter", { state: data, replace: true });
                                             navigate(0)
                                         }
                                     })}>
@@ -66,7 +66,7 @@ export default function Navbar({ children }) {
                                                 })}
                                                 type="text"
                                                 placeholder='Find your custom design, t-shirts, cup, key chain'
-                                                className="rounded-md py-2 global-search-bar text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                                className="rounded-sm global-search-bar text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm"
                                             />
                                             <button
                                                 type="submit"
@@ -88,23 +88,23 @@ export default function Navbar({ children }) {
                                                     className="relative flex items-center gap-2 p-1 text-black focus:outline-none"
                                                 >
                                                     <div>
-                                                    <ShoppingBagIcon className="h-6 w-6" aria-hidden="true" />
+                                                        <ShoppingBagIcon className="h-6 w-6" aria-hidden="true" />
                                                     </div>
-                                                    <div className='semibold-nunito'>Cart</div>
+                                                    <div className='text-m font-semibold'>Cart</div>
                                                 </button>
                                             </Link>
                                             {items?.length > 0 && <span className="inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
                                                 {items?.length}
                                             </span>}
 
-                                             {/* Profile dropdown */}
-                                             <Menu as="div" className="relative ml-3">
+                                            {/* Profile dropdown */}
+                                            <Menu as="div" className="relative ml-3">
                                                 <div>
                                                     <Menu.Button className="relative py-1 px-2 flex gap-2 max-w-xs items-center rounded-sm text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
                                                         <span className="absolute -inset-1.5" />
                                                         <span className="sr-only">Open user menu</span>
-                                                        <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
-                                                        <p className='semibold-nunito'>{user.name}</p>
+                                                        <img className="h-6 w-6 rounded-full" src={user.imageUrl} alt="" />
+                                                        <p className='text-m font-semibold'>{user.name}</p>
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition
@@ -193,6 +193,22 @@ export default function Navbar({ children }) {
                     )}
                 </Disclosure>
                 <main>
+                    {
+                        isCategorieSection ?
+                        <div className="bg-white flex items-center justify-center gap-10">
+                        {categorieNavigation.map((item) => (
+                            <Link
+                                key={item.name}
+                                to={item.href}
+                                className='text-l py-2 font-small text-gray-700 font-normal hover:text-gray-500'
+                                aria-current={item.current ? 'page' : undefined}
+                            >
+                                <p>{item.name}</p>
+                            </Link>
+                        ))}
+                    </div>
+                        : null
+                    }
                     <div className='bg-gray-100 mx-3'>{children}</div>
                     <Footer></Footer>
                 </main>

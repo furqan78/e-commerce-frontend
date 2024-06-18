@@ -64,7 +64,7 @@ export const routes = [
     element: <ProductListPage />
   },
   {
-    path: "/search",
+    path: "/product-filter",
     element: <ProductSearchPage />
   },
   {

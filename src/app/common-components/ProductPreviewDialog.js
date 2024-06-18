@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { StarIcon } from '@heroicons/react/24/solid';
 
@@ -9,7 +9,14 @@ function classNames(...classes) {
 function ProductPreviewDialog({ title, data, toggle, dialogClosed, dialogAction, actionButtonLabel }) {
 
   const cancelButtonRef = useRef(null);
-  const [productImage, setProductImage] = useState(data?.thumbnail);
+  const [productImage, setProductImage] = useState(data?.colors[0]?.images[0]);
+  const [colorImages, setColorImages] = useState(data?.colors[0]?.images);
+
+  useEffect(() => {
+    if (colorImages?.length > 0) {
+      setProductImage(colorImages[0]);
+    }
+  }, [colorImages])
 
 
   return (
@@ -56,15 +63,8 @@ function ProductPreviewDialog({ title, data, toggle, dialogClosed, dialogAction,
                                 className="product-image object-cover object-center"
                               />
                               <div className='flex mt-2 gap-2'>
-                                <div className='cursor-pointer' onClick={() => setProductImage(data.thumbnail)}>
-                                  <img
-                                    src={data.thumbnail}
-                                    alt='Ali Studio Product'
-                                    className="w-12 h-12 object-cover object-center"
-                                  />
-                                </div >
                                 {
-                                  data?.images?.map((item) => (
+                                  colorImages?.map((item) => (
                                     <div className='cursor-pointer' onClick={() => setProductImage(item)}>
                                       <img
                                         src={item}
@@ -79,6 +79,23 @@ function ProductPreviewDialog({ title, data, toggle, dialogClosed, dialogAction,
                             {/* Options */}
                             <div className="mt-2 width-60-percent lg:row-span-3 lg:mt-0">
                               <p className="text-2xl font-bold tracking-tight text-gray-900">{data.title}</p>
+
+                              <h3 className="text-sm font-medium text-green-600 mt-2">Special Price</h3>
+                              {
+                                data?.discount > 0 ?
+                                  (
+                                    <p className='font-medium nunito-text mt-2 flex items-center gap-3'>
+                                      <span className="text-3xl font-semibold tracking-tight text-gray-900 nunito-text">&#x20B9;{data.price - (data.price * (data.discount / 100))}</span>
+                                      <span className='text-gray-400 line-through'>&#x20B9;{data.price}</span>
+                                      <span className='text-green-600'>{data.discount}% off</span>
+                                    </p>
+                                  ) :
+                                  (
+                                    <p className='font-medium nunito-text mt-2 flex items-center gap-3'>
+                                      <span className="text-3xl font-semibold tracking-tight text-gray-900 nunito-text">&#x20B9;{data.price}</span>
+                                    </p>
+                                  )
+                              }
 
                               {/* Reviews */}
                               <div className="mt-2">
@@ -100,7 +117,6 @@ function ProductPreviewDialog({ title, data, toggle, dialogClosed, dialogAction,
                                 </div>
                               </div>
 
-                              <p className="text-2xl mt-2 tracking-tight text-gray-900">&#x20B9; {data.price}</p>
 
                               {/* Description and details */}
                               <div className="mt-2">
@@ -126,12 +142,41 @@ function ProductPreviewDialog({ title, data, toggle, dialogClosed, dialogAction,
 
                                 <div className="mt-3">
                                   <ul className="list-disc space-y-2 pl-4 text-sm">
-                                      <li key={data?.categorie} className="text-gray-400">
-                                        <span className="text-gray-600">{data?.categorie}</span>
-                                      </li>
+                                    <li key={data?.category} className="text-gray-400">
+                                      <span className="text-gray-600">{data?.category}</span>
+                                    </li>
                                   </ul>
                                 </div>
                               </div>
+                              <div className="mt-4">
+                                <h3 className="text-sm font-medium text-gray-900">Colors</h3>
+                                <div className='flex mt-4 gap-2'>
+                                  {
+                                    data?.colors?.map((item) => (
+                                      <div className='cursor-pointer border-width border-gray-300 p-2' onClick={() => setColorImages(item?.images)}>
+                                        <img
+                                          title={item?.color}
+                                          src={item?.images[0]}
+                                          alt='Ali Studio Product'
+                                          className="w-12 h-12 object-cover object-center"
+                                        />
+                                      </div>
+                                    ))
+                                  }
+                                </div>
+                              </div>
+
+                              <div className="mt-4">
+                                <h3 className="text-sm font-medium text-gray-900">Size</h3>
+                                <div className="mt-3 flex gap-3">
+                                  {data?.sizes?.map((size) => (
+                                    <div key={size} className="text-gray-400 border-width border-gray-300 px-5 py-2 ">
+                                      <span className="text-gray-600">{size}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
                             </div>
                           </div>
                           <div>

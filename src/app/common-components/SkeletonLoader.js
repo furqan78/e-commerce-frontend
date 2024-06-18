@@ -44,7 +44,7 @@ const SkeletonBox = () => (
   </SkeletonWrapper>
 );
 
-const SkeletonLoader = ({ count = 5 }) => {
+const SkeletonLoader = ({ count = 5, flexwrap }) => {
   return (
     <div className='flex gap-36 w-full'>
       {Array.from({ length: count }).map((_, index) => (

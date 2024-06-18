@@ -59,7 +59,7 @@ export default function UserOrders() {
                         </div>
                       </div>
                       <div>
-                        <p className='text-l font-normal text-gray-900'>&#x20B9; {item.product.price}</p>
+                        <p className='text-l font-normal text-gray-900 nunito-text'>&#x20B9;{item.product.price*item.quantity}</p>
                       </div>
                       <div>
                         <p className='text-sm font-semibold mt-1'>Order Confirmed on {getFormatedDate(order.order_date)}</p>

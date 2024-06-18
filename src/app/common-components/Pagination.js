@@ -3,7 +3,7 @@ import React from 'react'
 
 function Pagination({ page, handlePagination, totalItems, itemsPerPage }) {
     return (
-        <div className='m-3 border border-gray-200 '>
+        <div>
             <div className="flex items-center justify-between bg-white px-4 py-3 sm:px-6">
                 <div className="flex flex-1 justify-between sm:hidden">
                     <div
@@ -21,9 +21,12 @@ function Pagination({ page, handlePagination, totalItems, itemsPerPage }) {
                 </div>
                 <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                     <div>
-                        <p className="text-sm text-gray-700">
+                        {/* <p className="text-sm text-gray-700">
                             Showing <span className="font-medium">{(page - 1) * itemsPerPage + 1}</span> to <span className="font-medium">{page * itemsPerPage > totalItems ? totalItems : page * itemsPerPage}</span> of{' '}
                             <span className="font-medium">{totalItems}</span> results
+                        </p> */}
+                        <p className="text-sm text-gray-700">
+                            Page <span>{page}</span> of <span>{totalItems}</span>
                         </p>
                     </div>
                     <div>
@@ -41,7 +44,7 @@ function Pagination({ page, handlePagination, totalItems, itemsPerPage }) {
                                     onClick={e => handlePagination(index + 1)}
                                     aria-current="page"
                                     className={`relative z-10 cursor-pointer inline-flex items-center ${index + 1 === page ? 'bg-indigo-600 text-white' : 'text-gray-400'} px-4 py-2 text-sm font-semibold
-              focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+              focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ring-1 ring-inset ring-gray-300`}
                                 >
                                     {index + 1}
                                 </div>

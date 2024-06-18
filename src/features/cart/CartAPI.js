@@ -1,16 +1,15 @@
 import axios from "axios";
-import { authHeaders, headers } from "../../app/constant";
+import { authHeaders } from "../../app/constant";
 import { apis } from "../../app/constants/api-endpoints";
 
 export function addToCart(item) {
   return new Promise(async (resolve, reject) => {
-    fetch(apis.BASE_URL + apis.API_USER_CART_DETAIL, {
-      method: 'POST',
-      body: JSON.stringify(item),
-      headers: authHeaders.headers,
-    }
+    axios.post(
+      apis.BASE_URL + apis.API_USER_CART_DETAIL,
+      JSON.stringify(item),
+      { headers: authHeaders.headers },
     ).then(async (res) => {
-      const data = await res.json();
+      const data = res.data.data;
       resolve({ data });
     }, (error) => {
       reject([]);

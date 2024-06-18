@@ -6,6 +6,10 @@ export  const  apis = {
     API_USER_CART_DETAIL: "/cart",
     API_USER_CART_RESET: "/cart-reset/",
     API_FETCH_ALL_PRODUCTS: "/product",
+    API_FETCH_BEST_PRODUCTS: "/product/get-best-products",
     API_ADMIN_PRODUCT: "/admin-product",
-    API_USER_ORDERS: "/order"
+    API_RATE_PRODUCT: "/reviews",
+    API_CHECK_REVIEW_ELIGIBILITY: "/reviews/check-review-eligibility",
+    API_USER_ORDERS: "/order",
+    API_BANNERS: "/api/banners"
 }

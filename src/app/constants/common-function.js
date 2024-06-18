@@ -18,6 +18,14 @@ export const getFormatedDate = (dateString) => {
     return dateMDY;
 }
 
+export const getDateMonth = (dateString) => {
+    let date = new Date(dateString);
+    /* Date format you have */
+    let dateMDY = moment(date).format("MMM DD");
+    /* Date converted to MM-DD-YYYY format */
+    return dateMDY;
+}
+
 export const decodeJwtToken = (token) => {
     const decodedToken = jwtDecode(token);
     return decodedToken;
@@ -47,4 +55,13 @@ export const truncateString = (str) => {
     } else {
         return str;
     }
+}
+
+export const productFilterURL = (search=null, categories=null) => {
+    console.log(search, categories, 'fething search and categories')
+    return `/product-filter/search/${search}/categorie/${categories}`
+}
+
+export const classNames = (...classes) => {
+    return classes.filter(Boolean).join(' ')
 }

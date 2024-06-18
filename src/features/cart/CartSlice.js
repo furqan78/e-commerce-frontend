@@ -86,7 +86,7 @@ export const counterSlice = createSlice({
       })
       .addCase(addToCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        // state.items.push(action.payload);
+        state.items.push(action.payload);
       })
       .addCase(fetchItemsByUserIdAsync.pending, (state) => {
         state.status = 'loading';
@@ -100,7 +100,6 @@ export const counterSlice = createSlice({
       })
       .addCase(updateCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        console.log(state.items, action, ' fetcing datadddd')
         const index = state.items.findIndex(item=> item.id === action.payload.id);
         state.items[index] = action.payload;
       })
