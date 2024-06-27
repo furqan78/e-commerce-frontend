@@ -8,6 +8,7 @@ export  const  apis = {
     API_FETCH_ALL_PRODUCTS: "/product",
     API_FETCH_BEST_PRODUCTS: "/product/get-best-products",
     API_ADMIN_PRODUCT: "/admin-product",
+    API_UPLOAD_FILES: "/admin-product/upload-files",
     API_RATE_PRODUCT: "/reviews",
     API_CHECK_REVIEW_ELIGIBILITY: "/reviews/check-review-eligibility",
     API_USER_ORDERS: "/order",

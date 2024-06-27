@@ -63,17 +63,3 @@ export function removeItemsFromCart(itemId) {
   });
 }
 
-export async function resetCart(userId) {
-  return new Promise(async (resolve, reject) => {
-   axios.delete(
-    apis.BASE_URL + apis.API_USER_CART_RESET + userId,
-    {headers: authHeaders.headers})
-    .then(res=> {
-        resolve({ status: 'success' });
-    })
-    .catch(error => {
-      reject({status: "failed"})
-    });
-  });
-}
-

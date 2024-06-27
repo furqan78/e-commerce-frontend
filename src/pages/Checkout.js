@@ -1,18 +1,16 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '../features/cart/CartSlice';
 import { useForm } from 'react-hook-form';
-import { appLevelConstant, regEx } from '../app/constant';
+import { appLevelConstant } from '../app/constant';
 import { selectLoggedInUser } from '../features/auth/AuthSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
-import SavedIcon from "../assets/images/saved_icon.png"
-import { fetchUserInfoAsync, selectUserInfo, updateUserInfoAsync } from '../features/user/userSlice';
+import { selectUserInfo, updateUserInfoAsync } from '../features/user/userSlice';
 import { getItemFromLocalStorage } from '../app/constants/common-function';
-import { updateUser } from '../features/user/userAPI';
-import { ArchiveBoxXMarkIcon, TrashIcon } from '@heroicons/react/24/outline';
 import AppDialog from '../app/common-components/AppDialog';
 import ManageAddress from '../app/common-components/ManageAddress';
+import { createOrder } from '../features/order/orderAPI';
 
 export default function Checkout() {
     const [open, setOpen] = useState(true)
@@ -20,51 +18,54 @@ export default function Checkout() {
     const items = useSelector(selectItems);
     const [shippingEstimate, setShippingEstimate] = useState(20);
     const [isDialog, setDialog] = useState(false);
-    const [deliveryCharges, setDeliveryCharges] = useState(10);
+    const [deliveryCharges, setDeliveryCharges] = useState(40);
     const totalAmount = items.reduce((amount, item) => item.product.price * item.quantity + amount, 0);
+    const discountedTotalAmount = items.reduce((amount, item) => item.product.discountedPrice * item.quantity + amount, 0);
     const totalItems = items.reduce((total, item) => item.quantity + total, 0);
     const user = useSelector(selectLoggedInUser);
     const userData = useSelector(selectUserInfo);
     const currentOrder = useSelector(selectCurrentOrder);
     let userInfo = JSON.parse(getItemFromLocalStorage(appLevelConstant.USER_INFO_KEY));
+    const navigate = useNavigate();
     // const userData = useSelector(selectUserInfo);
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    // const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(appLevelConstant.ONLINE_LABLE);
     const [selectedIndex, setSelectedIndex] = useState(0);
 
-    const handleSelectAddress = (e) => {
-        setSelectedIndex(e.target.value);
-        setSelectedAddress(userInfo.address[e.target.value]);
+    const handleSelectAddress = (index) => {
+        setSelectedAddress(userInfo.address[index]);
     }
 
     const handlePaymentMode = (e) => {
         setPaymentMethod(e.target.value);
     }
 
-    const handleOrder = async (e) => {
+    const handleOrder = async () => {
         if (selectedAddress && paymentMethod) {
-            const orderItems = await items.map((element) => ({
-                product: element.product.id,
-                quantity: element.quantity,
-            }));
             const order = {
                 user_id: userInfo.id,
                 payment_method: paymentMethod,
-                shipping_address: selectedAddress,
-                order_items: orderItems,
+                shipping_address: selectedAddress
             }
-            dispatch(createOrderAsync(order));
+            createOrder(order).then((res) => {
+                if(res && res.user){
+                    navigate('/order-success', { state: res, replace: true });
+                }
+            })
+            .catch(error => {
+                console.log("Order Failed ! ", error);
+            })
         } else {
             alert("Please select address");
         }
     }
 
-    const handleOpenDialog = (index) => {
-        setDialog(true);
-    }
+    // const handleOpenDialog = (index) => {
+    //     setDialog(true);
+    // }
 
     const handleRemoveAddress = (index) => {
         setDialog(false);
@@ -85,22 +86,13 @@ export default function Checkout() {
 
     return (
         <>
-            {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace={true}> </Navigate>}
+            {/* {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace={true}> </Navigate>} */}
             <div className="min-h-full bg-gray-100 mt-5">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex gap-5">
                         <div className='w-2/3 bg-white p-6'>
-                            <ManageAddress />
-                            <form className='px-5 mt-12 py-10' noValidate onSubmit={handleSubmit((data) => {
-                                if (userInfo?.address?.length >= 5) {
-                                    alert("You can save only 5 addresses")
-                                } else {
-                                    setSelectedIndex(userInfo.address.length);
-                                    setSelectedAddress(data);
-                                    dispatch(updateUserInfoAsync({ id: userInfo.id, address: [...userInfo.address, data] }));
-                                    reset();
-                                }
-                            })}>
+                            <ManageAddress isSelected={true} getIndex={(index)=> handleSelectAddress(index)} />
+                            <form className='px-5 mt-12 py-10'>
                                 <div className="space-y-12">
                                     <div className="border-b border-gray-900/10 pb-12">
                                         <div className="mt-10 space-y-10">
@@ -152,26 +144,26 @@ export default function Checkout() {
                 </div>
                 <div className="flex justify-between my-2 py-3 text-base align-middle border-b border-gray-200">
                   <p className='text-gray-500'>Discount</p>
-                  <p className='font-medium text-green-600 nunito-text'>- &#x20B9;{shippingEstimate}</p>
+                  <p className='font-medium text-green-600 nunito-text'>- &#x20B9;{totalAmount - discountedTotalAmount}</p>
                 </div>
                 <div className="flex justify-between my-2 py-3 text-base align-middle border-b border-gray-200">
                   <p className='text-gray-500'>Delivery Charges</p>
-                  <p className='font-medium nunito-text'><span className='text-green-600'>Free</span></p>
+                  <p className='font-medium nunito-text'><span className='text-gray-400 line-through'>&#x20B9;{totalItems*deliveryCharges}</span> <span className='text-green-600'>Free</span></p>
                 </div>
                 <div className="flex justify-between my-2 text-lg font-medium text-gray-900 py-3">
                   <p className='nunito-text font-bold'>Total Payable</p>
-                  <p className='nunito-text font-bold'>&#x20B9; {totalAmount - shippingEstimate}</p>
+                  <p className='nunito-text font-bold'>&#x20B9; {discountedTotalAmount}</p>
                 </div>
                 <div className="mt-6">
-                  <Link
-                    to="/checkout"
-                    className="flex items-center justify-center rounded-md border border-transparent pamplet-btn px-6 py-3 text-base font-medium text-white shadow-sm"
+                  <button
+                  onClick={handleOrder}
+                    className="flex w-full items-center justify-center rounded-md border border-transparent pamplet-btn px-6 py-3 text-base font-medium text-white shadow-sm"
                   >
                     CONFIRM ORDER
-                  </Link>
+                  </button>
                 </div>
                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                  <p className='font-medium text-lg nunito-text text-green-600'>Your Total Saving on this order &#x20B9;{totalAmount - (totalAmount - shippingEstimate)}</p>
+                  <p className='font-medium text-lg nunito-text text-green-600'>Your Total Saving on this order &#x20B9;{totalAmount - discountedTotalAmount}</p>
                 </div>
               </div>
                         </div>

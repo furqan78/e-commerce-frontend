@@ -19,7 +19,7 @@ export function fetchAllProducts(reqObj) {
   });
 }
 
-export function getAllProducts(reqObj, limit = 12) {
+export async function getAllProducts(reqObj, limit = 12) {
   // Initialize URLSearchParams
   const params = new URLSearchParams();
 
@@ -38,32 +38,70 @@ export function getAllProducts(reqObj, limit = 12) {
   // Construct the full URL with query parameters
   const url = `${apis.BASE_URL}${apis.API_FETCH_ALL_PRODUCTS}?${params.toString()}`;
 
-  return axios.get(url, { headers: headers })
-    .then((res) => res.data.data)
-    .catch((error) => {
-      if (axios.isCancel(error)) {
-        console.log('Request canceled', error.message);
-        throw new Error('Request canceled');
-      } else {
-        throw error;
-      }
-    });
+  try {
+    const res = await axios.get(url, { headers: headers });
+    return res.data.data;
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log('Request canceled', error.message);
+      throw new Error('Request canceled');
+    } else {
+      throw error;
+    }
+  }
 }
 
 
-export function addProduct(reqObj) {
-  return new Promise(async (resolve, reject) => {
-    axios.post(
+export async function addProduct(reqObj) {
+  try {
+    const res = await axios.post(
       apis.BASE_URL + apis.API_ADMIN_PRODUCT,
       JSON.stringify(reqObj),
-      { headers: authHeaders.headers },
-    ).then((res) => {
-      const data = res.data.data;
-      resolve({ data });
-    }).catch((error) => {
-      reject([]);
+      { headers: authHeaders.headers });
+    return res.data.data;
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log('Request canceled', error.message);
+      throw new Error('Request canceled');
+    } else {
+      throw error;
+    }
+  }
+}
+
+export async function uploadFiles(reqObj) {
+  try {
+    const res = await axios.post(
+      apis.BASE_URL + apis.API_UPLOAD_FILES,
+      reqObj,
+      { headers: authHeaders.formDataHeaders });
+    return res.data;
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log('Request canceled', error.message);
+      throw new Error('Request canceled');
+    } else {
+      throw error;
+    }
+  }
+}
+
+export async function deleteFiles(reqObj) {
+  try {
+    const res = await axios.delete(
+      apis.BASE_URL + apis.API_UPLOAD_FILES, {
+      headers: authHeaders.headers,
+      data: reqObj,
     });
-  });
+    return res.data;
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log('Request canceled', error.message);
+      throw new Error('Request canceled');
+    } else {
+      throw error;
+    }
+  }
 }
 
 export function addBanner(reqObj) {
@@ -81,30 +119,32 @@ export function addBanner(reqObj) {
   });
 }
 
-export function getBanners(position) {
-  return axios.get(
-    apis.BASE_URL + apis.API_BANNERS + `${position ? "?position=" + position : ""}`,
-    { headers: headers },
-  ).then((res) => res.data.data)
-    .catch((error) => {
-      if (axios.isCancel(error)) {
-        console.log('Request canceled', error.message);
-        throw new Error('Request canceled');
-      } else {
-        throw error;
-      }
-    });
+export async function getBanners(position) {
+  try {
+    const res = await axios.get(
+      apis.BASE_URL + apis.API_BANNERS + `${position ? "?position=" + position : ""}`,
+      { headers: headers });
+    return res.data.data;
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log('Request canceled', error.message);
+      throw new Error('Request canceled');
+    } else {
+      throw error;
+    }
+  }
 }
 
-export function updateProduct(reqObj, productId) {
-  return axios.put(
-    apis.BASE_URL + apis.API_ADMIN_PRODUCT + `/${productId}`,
-    JSON.stringify(reqObj),
-    { headers: authHeaders.headers },
-  ).then((res) => res.data.data)
-    .catch((error) => {
-      throw error;
-    });
+export async function updateProduct(reqObj, productId) {
+  try {
+    const res = await axios.put(
+      apis.BASE_URL + apis.API_ADMIN_PRODUCT + `/${productId}`,
+      JSON.stringify(reqObj),
+      { headers: authHeaders.headers });
+    return res.data.data;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export function fetchProductById(id) {
@@ -122,16 +162,17 @@ export function fetchProductById(id) {
   });
 }
 
-export function getProductById(id) {
-  return axios({
-    url: apis.BASE_URL + apis.API_FETCH_ALL_PRODUCTS + `/${id}`,
-    method: "GET",
-    headers: authHeaders.headers,
-  })
-    .then(res => res.data.data)
-    .catch(error => {
-      throw error;
+export async function getProductById(id) {
+  try {
+    const res = await axios({
+      url: apis.BASE_URL + apis.API_FETCH_ALL_PRODUCTS + `/${id}`,
+      method: "GET",
+      headers: authHeaders.headers,
     });
+    return res.data.data;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export function fetchAllBrands() {
@@ -189,33 +230,35 @@ export function fetchProductsByFilters(filter, sort, pagination) {
   });
 }
 
-export const rateProducts = (reqObj) => {
-  return  axios.post(
-    apis.BASE_URL + apis.API_RATE_PRODUCT,
-    JSON.stringify(reqObj),
-    { headers: authHeaders.headers },
-  ).then((res) => res.data.data)
-  .catch((error) => {
+export const rateProducts = async (reqObj) => {
+  try {
+    const res = await axios.post(
+      apis.BASE_URL + apis.API_RATE_PRODUCT,
+      JSON.stringify(reqObj),
+      { headers: authHeaders.headers });
+    return res.data.data;
+  } catch (error) {
     if (axios.isCancel(error)) {
       console.log('Request canceled', error.message);
       throw new Error('Request canceled');
     } else {
       throw error;
     }
-  });
+  }
 }
 
-export const checkRatingEligibility = (userId, productId) => {
-  return  axios.get(
-    apis.BASE_URL + apis.API_CHECK_REVIEW_ELIGIBILITY + `?userId=${userId}&productId=${productId}`,
-    { headers: authHeaders.headers },
-  ).then((res) => res.data.data)
-  .catch((error) => {
+export const checkRatingEligibility = async (userId, productId) => {
+  try {
+    const res = await axios.get(
+      apis.BASE_URL + apis.API_CHECK_REVIEW_ELIGIBILITY + `?userId=${userId}&productId=${productId}`,
+      { headers: authHeaders.headers });
+    return res.data.data;
+  } catch (error) {
     if (axios.isCancel(error)) {
       console.log('Request canceled', error.message);
       throw new Error('Request canceled');
     } else {
       throw error;
     }
-  });
+  }
 }

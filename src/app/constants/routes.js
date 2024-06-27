@@ -17,6 +17,7 @@ import AdminAddUpdateProduct from "../../admin/components/AdminAddUpdateProduct"
 import AdminProductList from "../../admin/components/AdminProductList";
 import AdminProductDetail from "../../admin/components/AdminProductDetail";
 import AdminOrders from "../../admin/components/AdminOrders";
+import AdminFormBuilderPage from "../../admin/pages/AdminFormBuilderPage";
 
 export const routes = [
 
@@ -56,7 +57,7 @@ export const routes = [
       <ProductDetailPage></ProductDetailPage>
   },
   {
-    path: "/order-success/:id",
+    path: "/order-success",
     element: <OrderSuccessPage />
   },
   {
@@ -71,6 +72,8 @@ export const routes = [
     path: "/account/:action",
     element: <UserProfilePage></UserProfilePage>
   },
+
+  // Admin Routes
   {
     path: "/admin/product-list",
     element: <AdminProtected>
@@ -90,13 +93,25 @@ export const routes = [
   {
     path: "/admin/product-add-update",
     element: <AdminProtected>
-      <AdminAddUpdateProduct />
+      <AdminProductsPage>
+        <AdminAddUpdateProduct />
+      </AdminProductsPage>
     </AdminProtected>
   },
   {
     path: "/admin/orders",
     element: <AdminProtected>
+      <AdminProductsPage>
         <AdminOrders />
+      </AdminProductsPage>
+    </AdminProtected>
+  },
+  {
+    path: "/admin/form-builder",
+    element: <AdminProtected>
+      <AdminProductsPage>
+        <AdminFormBuilderPage />
+      </AdminProductsPage>
     </AdminProtected>
   },
   {

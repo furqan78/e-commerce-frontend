@@ -25,7 +25,7 @@ export default function Home() {
             page: 1,
             ratings: 3,
             sort: "rating:desc",
-            categories: "t-shirts,caps"
+            categories: "t-shirts,caps,pillow"
            }}
           />
         </div>
@@ -34,7 +34,6 @@ export default function Home() {
           heading={appLevelConstant.TSHIRTS_CAPS_MUG_AND_MORE_LABLE}
           requestObject={{
             page: 1,
-            categories: "t-shirts,caps"
            }}
           />
         </div>
@@ -56,7 +55,7 @@ export default function Home() {
           heading={appLevelConstant.BUSINES_CARDS_FOR_YOU_LABLE}
           requestObject={{
             page: 1,
-            categories: "t-shirts"
+            categories: "business-cards"
            }}
           />
         </div>
@@ -65,7 +64,7 @@ export default function Home() {
           heading={appLevelConstant.GRAB_YOUR_FAVOURITE_COFFE_MUG_LABLE}
           requestObject={{
             page: 1,
-            categories: "t-shirts"
+            categories: "coffee-mug"
            }}
           />
         </div>

@@ -49,6 +49,7 @@ export const appLevelConstant = {
     ORDER_STATUS_LABEL: "Order Status",
     ADMIN_LABEL: "ADMIN",
     PRICE_NOT_VALID: 'Price not valid',
+    QUANTITY_SHOULDBE_GREATER: 'Quantity should be 100 or greater',
     DISCOUNT_SHOULD_BE_BETWEEN: 'Discount should be between 1% to 80%',
     DESCRIPTION_NOT_VALID: "Description not valid",
     HIGHLIGHT_NOT_VALID: "Highlight not valid",
@@ -93,6 +94,10 @@ export const headers = {
 export const authHeaders = {
     headers: {
         "Content-Type": "application/json",
+        "Authorization": getItemFromLocalStorage(appLevelConstant.TOKEN_KEY),
+    },
+    formDataHeaders: {
+        "Content-Type": "multipart/form-data",
         "Authorization": getItemFromLocalStorage(appLevelConstant.TOKEN_KEY),
     }
 }
@@ -149,46 +154,232 @@ export const orderStatus = [
 ]
 
 export const categorieNavigation = [
-    { 
-        name: 'T-shirts', 
-        href: '/product-filter', 
-        current: false, 
+    {
+        name: 'T-shirts',
+        href: '/product-filter',
+        current: false,
         image: "1k2OZE-QH-a4SuANQ5mCv-54rtUxj_ikx",
         alt: ""
     },
-    { 
-        name: 'Business Cards', 
-        href: '/product-filter', 
+    {
+        name: 'Business Cards',
+        href: '/product-filter',
         current: false,
         image: "1RfFIllwwxFDEk8X7gqTAS0vpsHPSY9AP",
         alt: ""
     },
-    { 
-        name: 'Coffee mug', 
-        href: '/product-filter', 
+    {
+        name: 'Coffee mug',
+        href: '/product-filter',
         current: false,
         image: "1AlDc6J8oNo-tRwW09V9N6tNyAcxgbuOh",
         alt: ""
     },
-    { 
-        name: 'Custom cap', 
-        href: '/product-filter', 
+    {
+        name: 'Custom cap',
+        href: '/product-filter',
         current: false,
         image: "1DPTgVvff-jo_lN01zh_7KdkytdLsurv7",
         alt: ""
     },
-    { 
-        name: 'Custom pillow', 
-        href: '/product-filter', 
+    {
+        name: 'Custom pillow',
+        href: '/product-filter',
         current: false,
         image: "1_0tObkcmprClnakO5woHWR-9MqfIkQBk",
-        alt: "" 
+        alt: ""
     },
-    { 
-        name: 'Key Chain', 
-        href: '/product-filter', 
+    {
+        name: 'Key Chain',
+        href: '/product-filter',
         current: false,
         image: "1FhYdRxCq1ZtqVFOViK7a7XUtzCkDQo6l",
         alt: ""
     },
+]
+
+export const tshirtSizes = {
+    [appLevelConstant.T_SHIRTS_VALUE]: [
+        { id: 'all', size: 'Select/Deselect All' },
+        { id: 1, size: 'S', stock: 0 },
+        { id: 2, size: 'M', stock: 0 },
+        { id: 3, size: 'L', stock: 0 },
+        { id: 4, size: 'XL', stock: 0 },
+        { id: 5, size: 'XXL', stock: 0 },
+    ],
+    [appLevelConstant.CUSTOM_CAP_VALUE]: [
+        { id: 'all', size: 'Select/Deselect All' },
+        { id: 1, size: 'S', stock: 0 },
+        { id: 2, size: 'M', stock: 0 },
+        { id: 3, size: 'L', stock: 0 },
+        { id: 4, size: 'Adjustable', stock: 0 },
+    ]
+};
+
+export const categories = {
+    [appLevelConstant.T_SHIRTS_VALUE]: [
+        'Casual',
+        'Formal',
+        'Sportswear',
+        'Graphic Tees',
+        'V-Neck',
+        'Polo',
+        'Henley',
+        'Long Sleeve',
+        'Raglan',
+        'Tank Tops',
+        'Oversized',
+        'Slim Fit'
+    ],
+    [appLevelConstant.CUSTOM_CAP_VALUE]: [
+        'Baseball Cap',
+        'Snapback Cap',
+        'Trucker Cap',
+        'Dad Cap',
+        'Beanie',
+        'Flat Cap',
+        'Bucket Hat',
+        'Boonie Hat',
+        'Visor',
+        'Newsboy Cap',
+        'Golf Cap',
+        'Trapper Hat',
+        'Fedora',
+        'Panama Hat'
+    ],
+    [appLevelConstant.BUSINESS_CARDS_VALUE]: [
+        'Standard Business Cards',
+        'Premium Business Cards',
+        'Die-Cut Business Cards',
+        'Folded Business Cards',
+        'Embossed/Debossed Business Cards',
+        'Spot UV Business Cards',
+        'Metal Business Cards',
+        'Plastic Business Cards',
+        'Eco-Friendly Business Cards',
+        'Magnetic Business Cards',
+        'Photo Business Cards',
+        'Mini Business Cards',
+        'Vertical Business Cards'
+    ],
+    [appLevelConstant.COFFEE_MUG_VALUE]: [
+        'Classic Ceramic Mugs',
+        'Travel Mugs',
+        'Espresso Cups',
+        'Latte Mugs',
+        'Glass Mugs',
+        'Stoneware Mugs',
+        'Stainless Steel Mugs',
+        'Enamel Mugs',
+        'Novelty Mugs',
+        'Insulated Tumblers',
+        'Cappuccino Cups',
+        'Bistro Mugs'
+    ],
+    [appLevelConstant.PILLOW_COVER_VALUE]: [
+        'Standard Pillows',
+        'Body Pillows',
+        'Memory Foam Pillows',
+        'Orthopedic Pillows',
+        'Decorative Pillows (Throw Pillows)',
+        'Down Pillows',
+        'Feather Pillows',
+        'Latex Pillows',
+        'Gel Pillows',
+        'Travel Pillows',
+        'Bolster Pillows',
+        'Wedge Pillows',
+        'Euro Pillows',
+        'Pregnancy Pillows'
+    ],
+    [appLevelConstant.KEY_CHAIN_VALUE]: [
+        'Classic Keychains',
+        'Novelty Keychains',
+        'Customized Keychains',
+        'Promotional Keychains',
+        'Utility Keychains',
+        'Fashion Keychains',
+        'Tech Keychains',
+        'Sports Keychains',
+        'Cultural Keychains',
+        'Safety Keychains',
+        'Eco-Friendly Keychains',
+        'Luxury Keychains'
+    ]
+}
+
+export const colorTemplate = {
+    [appLevelConstant.T_SHIRTS_VALUE]: {
+        color: '',
+        images: [],
+        sizes: []
+    },
+    [appLevelConstant.CUSTOM_CAP_VALUE]: {
+        color: '',
+        images: [],
+        sizes: []
+    },
+    [appLevelConstant.COFFEE_MUG_VALUE]: {
+        color: '',
+        images: [],
+        stock: 0
+    },
+    [appLevelConstant.PILLOW_COVER_VALUE]: {
+        color: '',
+        images: [],
+        stock: 0
+    },
+    [appLevelConstant.KEY_CHAIN_VALUE]: {
+        color: '',
+        images: [],
+        stock: 0
+    },
+    [appLevelConstant.BUSINESS_CARDS_VALUE]: {
+        color: '',
+        images: [],
+        stock: 0
+    }    
+}
+
+export const productKeys = [
+    {
+        lable: "Material",
+        value: "material",
+    },
+    {
+        lable: "Sleeve Type",
+        value: "sleeveType",
+    },
+    {
+        lable: "Neck Type",
+        value: "neckType",
+    },
+    {
+        lable: "Category",
+        value: "category",
+    },
+    {
+        lable: "Dimension",
+        value: "dimensions",
+    },
+    {
+        lable: "Firmness",
+        value: "firmness",
+    },
+    {
+        lable: "Filled Material",
+        value: "fillMaterial",
+    },
+    {
+        lable: "Capacity",
+        value: "capacity",
+    },
+    {
+        lable: "Paper Type",
+        value: "paperType",
+    },
+    {
+        lable: "Quantity",
+        value: "quantity",
+    }
 ]

@@ -31,13 +31,13 @@ export default function UserOrders() {
       </div>
       <div className='mt-5'>
         {orders && orders.data ? orders?.data?.map((order, index) => (
-          <ul role="list" className="-my-6" key={index}>
+          <ul className="-my-6" key={index}>
             {order.order_items.map((item, index) => (
               <li key={index} className="flex py-6 user-order-card">
                 <div className="h-20 w-20 flex-shrink-0 overflow-hidden">
                   <img
-                    src={item.product.thumbnail}
-                    alt={item.product.title}
+                    src={item?.selectedDetails?.images[0]}
+                    alt={item?.product?.title}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>

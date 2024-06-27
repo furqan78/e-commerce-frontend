@@ -15,7 +15,7 @@ function classNames(...classes) {
 }
 
 
-function ManageAddress() {
+function ManageAddress({isSelected = false, getIndex}) {
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
     let userInfo = JSON.parse(getItemFromLocalStorage(appLevelConstant.USER_INFO_KEY));
     const userData = useSelector(selectUserInfo);
@@ -23,6 +23,7 @@ function ManageAddress() {
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [addressForm, setAddressForm] = useState(false);
     const [isEdit, setEdit] = useState(false);
+    const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
     const dispatch = useDispatch();
 
 
@@ -41,6 +42,11 @@ function ManageAddress() {
         setAddressForm(false);
         setEdit(false);
         setSelectedIndex(null);
+    }
+
+    const handleSendIndex = (index) => {
+        setSelectedAddressIndex(index);
+        getIndex(index);
     }
 
     return (
@@ -218,7 +224,8 @@ function ManageAddress() {
             }
             <div className='mt-10'>
                 {userInfo?.address?.length > 0 ? userInfo?.address?.map((address, index) => (
-                    <div className='p-4 border border-gray-200 mt-3'>
+                    <div className={`p-4 border mt-3 ${isSelected && selectedAddressIndex === index ? "border-blue-500 bg-blue-50" : "border-gray-200"} ${isSelected ? "cursor-pointer" : ""}`}
+                    onClick={()=> isSelected ? handleSendIndex(index) : null}>
                         <li key={index} className="flex justify-between gap-x-6">
                             <div className="flex min-w-0 gap-x-4">
                                 <div className="min-w-0 flex-auto">

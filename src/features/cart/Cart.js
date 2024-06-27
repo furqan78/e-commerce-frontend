@@ -40,7 +40,8 @@ export default function Cart() {
   const totalItems = items?.reduce((total, item) => item?.quantity + total, 0);
   const [shippingEstimate, setShippingEstimate] = useState(70);
   const [deliveryCharges, setDeliveryCharges] = useState(40);
-  let totalAmount = items?.reduce((amount, item) => item?.product?.discountedPrice * item?.quantity + amount, 0);
+  let totalAmount = items?.reduce((amount, item) => item?.product?.price * item?.quantity + amount, 0);
+  let discountedTotalAmount = items?.reduce((amount, item) => item?.product?.discountedPrice * item?.quantity + amount, 0);
 
   const handleQuantity = (quantity, itemId) => {
     dispatch(updateCartAsync({ quantity: quantity, id: itemId }));
@@ -59,7 +60,7 @@ export default function Cart() {
                 <li key={item?.product?.id} className="flex p-5 border-b border-gray-200">
                   <div className="h-36 w-28  flex-shrink-0 overflow-hidden">
                     <img
-                      src={item?.product?.colors ? item?.product?.colors[0]?.images[0] : ""}
+                      src={item?.selectedDetails?.images ? item?.selectedDetails?.images[0] : ""}
                       alt={item?.product?.title}
                       className="h-full w-full object-cover object-center"
                     />
@@ -69,7 +70,22 @@ export default function Cart() {
                     <div className='flex justify-between '>
                       <div className="text-base text-gray-900">
                         <p className='text-m text-black font-normal family-open-sans'>{item?.product?.title}</p>
-                        <p className='mt-2 text-lg text-black font-semibold nunito-text'>&#x20B9;{item?.product?.discountedPrice}</p>
+                        {
+                  item?.product?.discount > 0 ?
+                    (
+                      <p className='nunito-text mt-2 flex items-center gap-2'>
+                        <span className="text-xl font-semibold tracking-tight text-gray-900 nunito-text">&#x20B9;{item?.product?.discountedPrice}</span>
+                        <span className='text-gray-400 line-through'>&#x20B9;{item?.product?.price}</span>
+                        <span className='text-green-600'>{item?.product?.discount}% off</span>
+                      </p>
+                    ) :
+                    (
+                      <p className='font-medium nunito-text mt-2 flex items-center gap-3'>
+                        <span className="text-3xl font-semibold tracking-tight text-gray-900 nunito-text">&#x20B9;{item?.product?.price}</span>
+                      </p>
+                    )
+                }
+                        { item.selectedDetails.size ? <p className='mt-2 text-m text-gray-400 font-semibold'>Size - {item.selectedDetails.size}</p> : null }
                       </div>
                       <div className="text-base text-gray-900">
                         <p className='text-sm text-black font-normal family-open-sans'>
@@ -92,7 +108,7 @@ export default function Cart() {
                       </div>
                       </div>
                     </div>
-                      <div className="mt-12">
+                      <div className="mt-10">
                         <button
                           type="button"
                           onClick={(e) => handleRemoveItems(e, item?.id)}
@@ -113,7 +129,7 @@ export default function Cart() {
                 </div>
                 <div className="flex justify-between my-2 py-3 text-base align-middle border-b border-gray-200">
                   <p className='text-gray-500'>Discount</p>
-                  <p className='font-medium text-green-600 nunito-text'>- &#x20B9;{shippingEstimate}</p>
+                  <p className='font-medium text-green-600 nunito-text'>- &#x20B9;{totalAmount - discountedTotalAmount}</p>
                 </div>
                 <div className="flex justify-between my-2 py-3 text-base align-middle border-b border-gray-200">
                   <p className='text-gray-500'>Delivery Charges</p>
@@ -121,7 +137,7 @@ export default function Cart() {
                 </div>
                 <div className="flex justify-between my-2 text-lg font-medium text-gray-900 py-3">
                   <p className='nunito-text font-bold'>Total Amount</p>
-                  <p className='nunito-text font-bold'>&#x20B9; {totalAmount - shippingEstimate}</p>
+                  <p className='nunito-text font-bold'>&#x20B9; {discountedTotalAmount}</p>
                 </div>
                 <div className="mt-6">
                   <Link
@@ -132,7 +148,7 @@ export default function Cart() {
                   </Link>
                 </div>
                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                  <p className='font-medium text-lg nunito-text text-green-600'>You will save &#x20B9;{totalAmount - (totalAmount - shippingEstimate)}, on this order</p>
+                  <p className='font-medium text-lg nunito-text text-green-600'>You will save &#x20B9;{totalAmount - discountedTotalAmount}, on this order</p>
                 </div>
               </div>
             </ul>

@@ -65,3 +65,8 @@ export const productFilterURL = (search=null, categories=null) => {
 export const classNames = (...classes) => {
     return classes.filter(Boolean).join(' ')
 }
+
+export const getPathFromUrl = (url) => {
+    if(!url) return;
+    return url.split('ali-studio-9c078.appspot.com/')[1]; // Remove the leading '/'
+  };

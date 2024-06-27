@@ -1,27 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useParams } from "react-router-dom";
-import { selectLoggedInUser } from "../features/auth/AuthSlice";
-import { useEffect } from "react";
-import { resetCartAsync } from "../features/cart/CartSlice";
-import { getItemFromLocalStorage } from "../app/constants/common-function";
-import { appLevelConstant } from "../app/constant";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import "../features/order/order.scss";
 import SuccessImage from "../assets/images/success-check.png";
 
 export default function OrderSuccessPage() {
-    const params = useParams();
-    const dispatch = useDispatch();
-    const user = JSON.parse(getItemFromLocalStorage(appLevelConstant.USER_INFO_KEY));
-    console.log(params, 'fetched params')
-
-    useEffect(()=> {
-        console.log(user, 'f etched userinfo')
-        dispatch(resetCartAsync(user.id));
-    },[dispatch, user]);
+    const location = useLocation();
+    const order = location?.state;
 
     return (
         <>
-         {!params?.id && <Navigate to={'/'} replace={true}> </Navigate>}
+         {!order?.id && <Navigate to={'/'} replace={true}> </Navigate>}
             <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
                 <div className="text-center order-success-container">
                     <img src={SuccessImage} alt="Order Success" className="w-24 h-24 m-auto success-image" />

@@ -66,11 +66,11 @@ export default function Navbar({ children, isCategorieSection = false }) {
                                                 })}
                                                 type="text"
                                                 placeholder='Find your custom design, t-shirts, cup, key chain'
-                                                className="rounded-sm global-search-bar text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm"
+                                                className="rounded-md bg-indigo-50 global-search-bar border border-gray-100 text-gray-900 placeholder:text-gray-400 font-semibold sm:text-sm"
                                             />
                                             <button
                                                 type="submit"
-                                                className="search-btn"
+                                                className="search-btn text-gray-500"
                                             >
                                                 <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
                                             </button>

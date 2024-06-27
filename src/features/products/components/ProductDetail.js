@@ -4,37 +4,17 @@ import { RadioGroup } from '@headlessui/react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { addToCartAsync, fetchItemsByUserIdAsync, selectItems } from '../../cart/CartSlice';
-import { selectLoggedInUser } from '../../auth/AuthSlice';
-import { CheckIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import "../../pamplet/pamplet.scss"
 import { appLevelConstant } from '../../../app/constant';
 import { getItemFromLocalStorage } from '../../../app/constants/common-function';
 import { BoltIcon } from '@heroicons/react/24/solid';
-import { getProductById, rateProducts } from '../productAPI';
+import { getProductById } from '../productAPI';
 import { ProductSkeleton } from '../../../app/common-components/ProductSkeleton';
 import ProductCarousel from './ProductCarousel';
 import RateReviewForm from './RateReviewForm';
-
-
-const colors = [
-  { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
-  { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
-  { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
-];
-
-const sizes = [
-  { name: 'S', inStock: true },
-  { name: 'M', inStock: true },
-  { name: 'L', inStock: true },
-  { name: 'XL', inStock: true },
-];
-
-const highlights = [
-  'Hand cut and sewn locally',
-  'Dyed with our proprietary colors',
-  'Pre-washed & pre-shrunk',
-  'Ultra-soft 100% cotton',
-];
+import CollapsableCard from '../../../app/common-components/CollapsableCard';
+import ProductKeyPoints from './ProductKeyPoints';
 
 const reviews = { href: '#', average: 4, totalCount: 117 }
 
@@ -66,7 +46,7 @@ export default function ProductDetail() {
           setProductImage(data?.colors[0]?.images[0]);
           setColorImages(data?.colors[0]?.images);
           setSelectedColor(data?.colors[0].color);
-          setSelectedSize(data?.sizes[0]);
+          setSelectedSize(data?.colors[0].sizes[0].size);
           setLoading(false);
         }
       })
@@ -90,8 +70,20 @@ export default function ProductDetail() {
 
   const handleCart = (e) => {
     e.preventDefault();
-    const newItem = { product_id: product?.id, user_id: userInfo?.id, quantity: 1 };
-    dispatch(addToCartAsync(newItem));
+    const cartReqObj = { 
+      product_id: product?.id, 
+      user_id: userInfo?.id, 
+      quantity: 1,
+      selectedDetails: {
+        color: selectedColor,
+        images: colorImages
+      }
+    };
+
+    if(product?.productType === appLevelConstant.T_SHIRTS_VALUE || product?.productType === appLevelConstant.CUSTOM_CAP_VALUE){
+      cartReqObj.selectedDetails.size = selectedSize;
+    }
+    dispatch(addToCartAsync(cartReqObj));
   }
 
 
@@ -112,7 +104,7 @@ export default function ProductDetail() {
           {product ? <div>
             {/* Image gallery */}
             <div className=' bg-white flex gap-12 px-5 py-5'>
-              <div className='flex mt-2 gap-2'>
+              <div className='flex mt-2 gap-2 width-45-percent'>
                 <div>
                   <div>
                     {
@@ -143,18 +135,18 @@ export default function ProductDetail() {
                 <h3 className="text-sm font-medium text-green-600 mt-2">Special Price</h3>
                 {
                   product?.discount > 0 ?
-                  (
-                <p className='font-medium nunito-text mt-2 flex items-center gap-3'>
-                  <span className="text-3xl font-semibold tracking-tight text-gray-900 nunito-text">&#x20B9;{product.discountedPrice}</span>
-                  <span className='text-gray-400 line-through'>&#x20B9;{product.price}</span>
-                  <span className='text-green-600'>{product.discount}% off</span>
-                </p>
-                  ) :
-                  (
-                    <p className='font-medium nunito-text mt-2 flex items-center gap-3'>
-                    <span className="text-3xl font-semibold tracking-tight text-gray-900 nunito-text">&#x20B9;{product.price}</span>
-                  </p>
-                  )
+                    (
+                      <p className='font-medium nunito-text mt-2 flex items-center gap-3'>
+                        <span className="text-3xl font-semibold tracking-tight text-gray-900 nunito-text">&#x20B9;{product.discountedPrice}</span>
+                        <span className='text-gray-400 line-through'>&#x20B9;{product.price}</span>
+                        <span className='text-green-600'>{product.discount}% off</span>
+                      </p>
+                    ) :
+                    (
+                      <p className='font-medium nunito-text mt-2 flex items-center gap-3'>
+                        <span className="text-3xl font-semibold tracking-tight text-gray-900 nunito-text">&#x20B9;{product.price}</span>
+                      </p>
+                    )
                 }
 
                 {/* Reviews */}
@@ -209,7 +201,7 @@ export default function ProductDetail() {
                         product?.colors?.map((item) => (
                           <div
                             key={item?.color}
-                            className={`cursor-pointer border border-gray-300 p-2 relative ${selectedColor === item?.color ? 'border-blue-500' : ''}`}
+                            className={`cursor-pointer border  p-2 relative ${selectedColor === item?.color ? 'border-blue-500' : 'border-gray-300'}`}
                             title={item?.color}
                             onClick={() => handleColorClick(item?.color, item?.images)}
                           >
@@ -230,31 +222,30 @@ export default function ProductDetail() {
                   </div>
 
                   {/* Sizes */}
-                  <div className="mt-10">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                    </div>
-
-                    <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
-                      <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
-                      <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 l:grid-cols-4">
-                        {product?.sizes?.map((size) => (
-                          <div
-                            key={size}
-                            className={`cursor-pointer border rounded-sm border-gray-300 flex items-center justify-center p-2 relative ${selectedSize === size ? 'border-blue-500 bg-blue-50' : ''}`}
-                            onClick={() => setSelectedSize(size)}
-                          >
-                            <span>{size}</span>
-                            {/* {selectedSize === size && (
-                              <div className="absolute top-0 right-0 opacity-70 w-full h-full flex items-center justify-center bg-gray-200">
-                                <CheckIcon className='w-6 h-6' />
-                              </div>
-                            )} */}
-                          </div>
-                        ))}
+                  {product?.productType === appLevelConstant.T_SHIRTS_VALUE || product?.productType === appLevelConstant.CUSTOM_CAP_VALUE ?
+                    <div className="mt-10">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-medium text-gray-900">Size</h3>
                       </div>
-                    </RadioGroup>
-                  </div>
+                      <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
+                        <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
+                        <div className="flex gap-3">
+                          {product?.colors?.map((colorItem) => (
+                            colorItem.color === selectedColor ?
+                            colorItem?.sizes?.map((item) => (
+                              <div
+                                key={item._id}
+                                className={`cursor-pointer border rounded-sm px-8 flex items-center justify-center py-2 relative ${selectedSize === item.size ? 'border-blue-500 bg-blue-50' : 'border-gray-300'}`}
+                                onClick={() => setSelectedSize(item.size)}
+                              >
+                                <span>{item.size}</span>
+                              </div>
+                            )) : null
+                          ))}
+                        </div>
+                      </RadioGroup>
+                    </div> : null
+                  }
                   {
                     isItemFound(items, product) === true ?
                       (<Link
@@ -291,13 +282,18 @@ export default function ProductDetail() {
               </div>
             </div>
             <div className='mt-3 relative'>
+              <CollapsableCard title={"Product Details"}>
+                <ProductKeyPoints product={product} />
+              </CollapsableCard>
+            </div>
+            <div className='mt-3 relative'>
               <RateReviewForm product={product} />
-              </div>
+            </div>
             <div className='mt-3 relative'>
               <ProductCarousel
                 heading={appLevelConstant.SIMILAR_PRODUCT_LABLE}
                 requestObject={{
-                  categories: product?.category
+                  categories: product?.productType
                 }}
               ></ProductCarousel>
             </div>
